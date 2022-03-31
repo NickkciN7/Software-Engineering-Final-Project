@@ -2,7 +2,7 @@ import os
 import flask
 from flask import Flask, render_template, session
 
-# import flask_login
+import flask_login
 from flask_login import current_user, login_required
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
@@ -25,9 +25,20 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
 
+class profile(flask_login.UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120))
+    password = db.Column(db.String(120))
+    currentpoints = db.Column(db.Integer)
+    lifetimepoints = db.Column(db.Integer)
+
+
+db.create_all()
+
+
 @app.route("/")
 def index():
-    return "<h1>Welcome To Our Webpage for PokeMasters!!!!asdasd</h1>"
+    return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
 
 
 app.run(
