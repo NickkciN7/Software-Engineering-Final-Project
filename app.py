@@ -41,6 +41,11 @@ def index():
     return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
 
 
+@app.route("/game")
+def game():
+    return render_template("game.html")
+
+
 app.run(
     host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")), debug=True
 )
