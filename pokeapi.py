@@ -56,4 +56,4 @@ def get_image(name):
     # print(data)
 
 
-# get_image("bulbasaur")
+# print(get_image("bulbasaur"))
