@@ -41,7 +41,48 @@ class profile(flask_login.UserMixin, db.Model):
     lifetimepoints = db.Column(db.Integer)
 
 
+class pokeinfo(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    imageurl = db.Column(db.String(500))
+
+
 db.create_all()
+
+# start pokeinfo database related functions
+
+# THIS FUNCTION HAS ALREADY BEEN USED ONCE, DOESN'T NEED TO BE USED AGAIN
+# populate pokeinfo table. faster to use populated table
+# than using api everytime
+def populatePokeInfo():
+    for i in range(1, GENERATION1_COUNT + 1):
+        poke_name = get_name(i)
+        new_poke_entry = pokeinfo(
+            id=i, name=poke_name.capitalize(), imageurl=get_image(poke_name)
+        )
+        db.session.add(new_poke_entry)
+        db.session.commit()
+        print(str(i) + ": done")
+
+
+# get name from database based on id
+def get_name_db(pokeid):
+    pokemon_entry = pokeinfo.query.get(pokeid)
+    return pokemon_entry.name
+
+
+# get image from db based on id
+def get_image_db(pokeid):
+    pokemon_entry = pokeinfo.query.get(pokeid)
+    return pokemon_entry.imageurl
+
+
+def get_name_and_image_db(pokeid):
+    pokemon_entry = pokeinfo.query.get(pokeid)
+    return {"name": pokemon_entry.name, "imageurl": pokemon_entry.imageurl}
+
+
+# end pokeinfo database related functions
 
 
 @app.route("/")
@@ -71,6 +112,9 @@ def gamedata():
     # populate available ids from 1 to 151
     for i in range(1, GENERATION1_COUNT + 1):
         available_ids.append(i)
+    # for i in range(len(available_ids)):
+    #     nAndIm = get_name_and_image_db(available_ids[i])
+    #     print("name: " + nAndIm["name"] + " " + "imageurl: " + nAndIm["imageurl"])
     # for i in available_ids:
     #     print(str(i) + " ")
 
@@ -106,27 +150,28 @@ def gamedata():
     #         ...
     # ]
     for i in range(10):
-        correct_name = get_name(correct_answers[i])
-        correct_image = get_image(correct_name)
-        current_correct_dict = {"name": correct_name, "image_url": correct_image}
+        nameAndImage = get_name_and_image_db(correct_answers[i])
+        correct_name = nameAndImage["name"]
+        correct_image = nameAndImage["imageurl"]
+        current_correct_dict = {
+            "name": correct_name,
+            "image_url": correct_image,
+        }
         current_incorrect_list = []
         for j in range(3):
-            current_incorrect_list.append(get_name(incorrect_answers[i][j]))
+            current_incorrect_list.append(get_name_db(incorrect_answers[i][j]))
         current_guess_info = {
             "correct": current_correct_dict,
             "incorrect": current_incorrect_list,
         }
         pokemon_info.append(current_guess_info)
-    # print(pokemon_info)
-    print(json.dumps(pokemon_info, indent=2))
 
-    # for i in range(len(correct_answers)):
-    #     print(str(correct_answers[i]))
-    # print("len " + str(len(available_ids)))
-    # correct_answers.append(random_id)
-    # while(random_id in correct_answers):
-    #     random_id
-    return "<h1>returns poke info</h1>"
+    return flask.jsonify(pokemon_info)
+
+    # print(pokemon_info)
+    # print(json.dumps(pokemon_info, indent=2))
+
+    # return "<h1>returns poke info</h1>"
 
 
 app.run(
