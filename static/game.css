@@ -1,0 +1,43 @@
+body {
+    background-color: #c1e1ec;
+}
+
+.container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.width_20 {
+    width: 20%;
+}
+
+.sides {
+    flex-basis: 25%;
+}
+
+.middle {
+    flex-basis: 50%;
+    text-align: center;
+}
+
+.button_divs {
+    flex-basis: 16.7%;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    margin: 20px;
+}
+
+.points {
+    background-color: #9acee0;
+    width: 50%;
+    border-radius: 25px;
+    padding: 10px;
+    /* padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 5px;
+    padding-bottom: 10px; */
+    /* text-align: center; */
+}
