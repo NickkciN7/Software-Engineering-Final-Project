@@ -82,6 +82,14 @@ def get_name_and_image_db(pokeid):
     return {"name": pokemon_entry.name, "imageurl": pokemon_entry.imageurl}
 
 
+def get_poke_info_db():
+    all_info_query = pokeinfo.query.all()
+    all_info = {}
+    for poke in all_info_query:
+        all_info[poke.id] = {"name": poke.name, "imageurl": poke.imageurl}
+    return all_info
+
+
 # end pokeinfo database related functions
 
 
