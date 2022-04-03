@@ -24,10 +24,13 @@ from dotenv import load_dotenv, find_dotenv
 # https://git.heroku.com/the-pokemasters.git
 # https://the-pokemasters.herokuapp.com/
 
+UPLOAD_FOLDER = "static/files"
+ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
+
 load_dotenv(find_dotenv())
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8zkdifenrk/ec]/'
-app.config["UPLOAD_FOLDER"] = "files"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 # Point SQLAlchemy to your Heroku database
@@ -53,6 +56,7 @@ class profile(flask_login.UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120))
     password = db.Column(db.String(120))
+
     currentpoints = db.Column(db.Integer)
     lifetimepoints = db.Column(db.Integer)
 
@@ -100,8 +104,36 @@ def signup():
             flask.flash(f"{user_name} has been added")
             return flask.redirect("/signup")
 
+        # if "file" not in flask.request.files:
+        #     return "there is no files"
+        # else:
+        #     file = flask.request.files["file"]
+        #     path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+        #     file.save(path)
+        #     return "file has been uploaded"
+
     else:
         return flask.render_template("signup.html")
+
+
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    if flask.request.method == "POST":
+        if "file" not in flask.request.files:
+            flask.flash("No file part")
+            return flask.redirect("/signup")
+        file = flask.request.files["file"]
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == "":
+            flask.flash("No selected file")
+            return flask.redirect("/signup")
+        if file:
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(path)
+            return path
+    return flask.render_template("upload.html")
 
 
 @app.route("/login", methods=["GET", "POST"])
