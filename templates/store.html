@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='game.css' ) }} />
+</head>
+
+<body>
+    {% for i in range(1,151) %}
+    <div style="background-color: aqua; width: 300px; display: inline-block; margin: 10px;">
+        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png" width="300px">
+        <br>
+        Bulbasaur
+        <br>
+        <button>Purchase</button>
+    </div>
+    {% if i%5 == 0 %}
+    <br>
+    {% endif %}
+    {% endfor %}
+
+</body>
+
+</html>
