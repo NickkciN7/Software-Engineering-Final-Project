@@ -1,6 +1,6 @@
 import os
 import flask
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, url_for
 
 import flask_login
 from flask_login import (
@@ -12,6 +12,11 @@ from flask_login import (
     login_required,
 )
 
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from werkzeug.utils import secure_filename
+from wtforms.validators import InputRequired
+
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
 
@@ -22,13 +27,7 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8zkdifenrk/ec]/'
-
-# MD - Old setting from Milestone2
-# uri = os.getenv("DATABASE_URL")
-# if uri.startswith("postgres://"):
-#     uri = uri.replace("postgres://", "postgresql://", 1)
-# app.config["SQLALCHEMY_DATABASE_URI"] = uri
-# app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["UPLOAD_FOLDER"] = "files"
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 # Point SQLAlchemy to your Heroku database
@@ -77,6 +76,10 @@ def signup():
         user_name = flask.request.form["user_name"]
         password = flask.request.form["password"]
 
+        if (len(user_name) == 0) or (len(password) == 0):
+            flask.flash("username or password cannot be empty!")
+            return flask.redirect("/signup")
+
         found_user = (
             profile.query.filter_by(username=user_name)
             .filter_by(password=password)
@@ -86,11 +89,17 @@ def signup():
             flask.flash(f"User Name {user_name} already exists!")
             return flask.redirect("/signup")
         else:
-            user = profile(username=user_name, password=password)
+            user = profile(
+                username=user_name,
+                password=password,
+                currentpoints=0,
+                lifetimepoints=0,
+            )
             db.session.add(user)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
             return flask.redirect("/signup")
+
     else:
         return flask.render_template("signup.html")
 
