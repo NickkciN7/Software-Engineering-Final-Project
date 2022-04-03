@@ -4,10 +4,23 @@ from pickle import APPEND
 import random
 from textwrap import indent
 import flask
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, url_for
 
 import flask_login
-from flask_login import current_user, login_required
+from flask_login import (
+    LoginManager,
+    login_user,
+    logout_user,
+    current_user,
+    UserMixin,
+    login_required,
+)
+
+from flask_wtf import FlaskForm
+from wtforms import FileField, SubmitField
+from werkzeug.utils import secure_filename
+from wtforms.validators import InputRequired
+
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
 from pokeapi import get_name, get_image
@@ -15,8 +28,17 @@ from pokeapi import get_name, get_image
 # number of pokemon in the first generation
 GENERATION1_COUNT = 151
 
+# MD - information only
+# https://git.heroku.com/the-pokemasters.git
+# https://the-pokemasters.herokuapp.com/
+
+UPLOAD_FOLDER = "static/files"
+ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
+
 load_dotenv(find_dotenv())
 app = Flask(__name__)
+app.secret_key = b'_5#y2L"F4Q8zkdifenrk/ec]/'
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 # Point SQLAlchemy to your Heroku database
@@ -30,13 +52,19 @@ if app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgres://"):
 # Gets rid of a warning
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+
 db = SQLAlchemy(app)
+
+login_manager = LoginManager()
+db.init_app(app)
+login_manager.init_app(app)
 
 
 class profile(flask_login.UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120))
     password = db.Column(db.String(120))
+
     currentpoints = db.Column(db.Integer)
     lifetimepoints = db.Column(db.Integer)
 
@@ -93,10 +121,104 @@ def get_poke_info_db():
 # end pokeinfo database related functions
 
 
+@login_manager.user_loader
+def load_user(user_id):
+    return profile.query.get(user_id)
+
+
 @app.route("/")
 def index():
     return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
 
+
+
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+    if flask.request.method == "POST":
+        user_name = flask.request.form["user_name"]
+        password = flask.request.form["password"]
+
+        if (len(user_name) == 0) or (len(password) == 0):
+            flask.flash("username or password cannot be empty!")
+            return flask.redirect("/signup")
+
+        found_user = (
+            profile.query.filter_by(username=user_name)
+            .filter_by(password=password)
+            .first()
+        )
+        if found_user:
+            flask.flash(f"User Name {user_name} already exists!")
+            return flask.redirect("/signup")
+        else:
+            user = profile(
+                username=user_name,
+                password=password,
+                currentpoints=0,
+                lifetimepoints=0,
+            )
+            db.session.add(user)
+            db.session.commit()
+            flask.flash(f"{user_name} has been added")
+            return flask.redirect("/signup")
+
+        # if "file" not in flask.request.files:
+        #     return "there is no files"
+        # else:
+        #     file = flask.request.files["file"]
+        #     path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
+        #     file.save(path)
+        #     return "file has been uploaded"
+
+    else:
+        return flask.render_template("signup.html")
+
+
+@app.route("/upload", methods=["GET", "POST"])
+def upload():
+    if flask.request.method == "POST":
+        if "file" not in flask.request.files:
+            flask.flash("No file part")
+            return flask.redirect("/signup")
+        file = flask.request.files["file"]
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == "":
+            flask.flash("No selected file")
+            return flask.redirect("/signup")
+        if file:
+            filename = secure_filename(file.filename)
+            path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            file.save(path)
+            return path
+    return flask.render_template("upload.html")
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if flask.request.method == "GET":
+        return flask.render_template("login.html")
+    else:
+        user_name = flask.request.form["user_name"]
+        password = flask.request.form["password"]
+
+        found_user = (
+            profile.query.filter_by(username=user_name)
+            .filter_by(password=password)
+            .first()
+        )
+        if found_user:
+            login_user(found_user)
+            return flask.redirect("/")
+        else:
+            flask.flash("This user does not exist!")
+            return flask.redirect("/login")
+
+
+@app.route("/logout", methods=["POST"])
+def logout():
+    logout_user()
+    return flask.redirect("/login")
 
 @app.route("/game")
 def game():
@@ -180,6 +302,7 @@ def gamedata():
     # print(json.dumps(pokemon_info, indent=2))
 
     # return "<h1>returns poke info</h1>"
+
 
 
 app.run(

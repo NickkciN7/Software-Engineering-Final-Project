@@ -3,8 +3,10 @@ import json
 
 BASE_URL = "https://pokeapi.co/api/v2/"
 
+
 # BASE_URL_WIKI = "https://en.wikipedia.org/w/api.php"
 BASE_URL_BULBA = "https://bulbapedia.bulbagarden.net/w/api.php"
+
 
 
 def get_name(id):
@@ -28,6 +30,7 @@ def get_image(name):
 
     # need capitalized name for wiki
     cap_name = name.capitalize()
+
     params = {
         "action": "query",
         "list": "search",
@@ -39,12 +42,14 @@ def get_image(name):
     data = response.json()
     page_id = data["query"]["search"][0]["pageid"]
 
+
     # need pilicense = any for things like video game images
     params = {
         "action": "query",
         "prop": "pageimages",
         "pithumbsize": "1000",
         "pilicense": "any",
+
         "pageids": page_id,
         "format": "json",
     }
@@ -52,6 +57,7 @@ def get_image(name):
     response = requests.get(BASE_URL_BULBA, params=params)
     data = response.json()
     # print(json.dumps(data, indent=2))
+
     data_to_pages = data["query"]["pages"]
     # next key in json is the title page id, but we don't know that yet.
     # however the json still contains the id, so need to get id then use that
@@ -68,4 +74,6 @@ def get_image(name):
     # print(data)
 
 
+
 # print(get_image("Pikachu (Pokémon)"))
+
