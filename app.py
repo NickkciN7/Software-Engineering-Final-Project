@@ -23,7 +23,7 @@ from wtforms.validators import InputRequired
 
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
-from pokeapi import get_name, get_image
+from pokeapi import get_name, get_image, get_sprite
 
 # number of pokemon in the first generation
 GENERATION1_COUNT = 151
@@ -82,13 +82,10 @@ db.create_all()
 # THIS FUNCTION HAS ALREADY BEEN USED ONCE, DOESN'T NEED TO BE USED AGAIN
 # populate pokeinfo table. faster to use populated table
 # than using api everytime
-def populatePokeInfo():
+def updatePokeInfo():
     for i in range(1, GENERATION1_COUNT + 1):
-        poke_name = get_name(i)
-        new_poke_entry = pokeinfo(
-            id=i, name=poke_name.capitalize(), imageurl=get_image(poke_name)
-        )
-        db.session.add(new_poke_entry)
+        pokemon_entry = pokeinfo.query.get(i)
+        pokemon_entry.imageurl = get_sprite(i)
         db.session.commit()
         print(str(i) + ": done")
 
@@ -235,6 +232,7 @@ def game():
 
 @app.route("/gamedata")
 def gamedata():
+    all_info = get_poke_info_db()
     pokemon_info = []
     available_ids = []
     correct_answers = []
@@ -280,16 +278,16 @@ def gamedata():
     #         ...
     # ]
     for i in range(10):
-        nameAndImage = get_name_and_image_db(correct_answers[i])
-        correct_name = nameAndImage["name"]
-        correct_image = nameAndImage["imageurl"]
+
+        correct_name = all_info[correct_answers[i]]["name"]
+        correct_image = all_info[correct_answers[i]]["imageurl"]
         current_correct_dict = {
             "name": correct_name,
             "image_url": correct_image,
         }
         current_incorrect_list = []
         for j in range(3):
-            current_incorrect_list.append(get_name_db(incorrect_answers[i][j]))
+            current_incorrect_list.append(all_info[incorrect_answers[i][j]]["name"])
         current_guess_info = {
             "correct": current_correct_dict,
             "incorrect": current_incorrect_list,
