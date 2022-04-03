@@ -8,7 +8,6 @@ BASE_URL = "https://pokeapi.co/api/v2/"
 BASE_URL_BULBA = "https://bulbapedia.bulbagarden.net/w/api.php"
 
 
-
 def get_name(id):
     # I believe pokemon-species returns less json than just pokemon
     # so using that instead to speed things up
@@ -22,7 +21,9 @@ def get_name(id):
 
 def get_sprite(id):
     poke_url = BASE_URL + "pokemon/" + str(id)
-    # parse json to get sprite
+    response = requests.get(poke_url)
+    data = response.json()
+    return data["sprites"]["front_default"]
 
 
 def get_image(name):
@@ -42,14 +43,12 @@ def get_image(name):
     data = response.json()
     page_id = data["query"]["search"][0]["pageid"]
 
-
     # need pilicense = any for things like video game images
     params = {
         "action": "query",
         "prop": "pageimages",
         "pithumbsize": "1000",
         "pilicense": "any",
-
         "pageids": page_id,
         "format": "json",
     }
@@ -74,6 +73,4 @@ def get_image(name):
     # print(data)
 
 
-
-# print(get_image("Pikachu (Pokémon)"))
-
+# get_sprite(35)
