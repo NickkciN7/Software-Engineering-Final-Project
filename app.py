@@ -182,6 +182,12 @@ def gamedata():
     # return "<h1>returns poke info</h1>"
 
 
+@app.route("/store")
+def store():
+    all_info = get_poke_info_db()
+    return render_template("store.html")
+
+
 app.run(
     host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")), debug=True
 )
