@@ -64,9 +64,10 @@ class profile(flask_login.UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(120))
     password = db.Column(db.String(120))
-
     currentpoints = db.Column(db.Integer)
     lifetimepoints = db.Column(db.Integer)
+    # add profile pic in database
+    pic_path = db.Column(db.String(255))
 
 
 class pokeinfo(db.Model):
@@ -171,6 +172,7 @@ def signup():
 
 
 @app.route("/upload", methods=["GET", "POST"])
+@login_required
 def upload():
     if flask.request.method == "POST":
         if "file" not in flask.request.files:
@@ -186,7 +188,11 @@ def upload():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(path)
-            return path
+            curr_user = profile.query.filter_by(username=current_user.username).first()
+            curr_user.pic_path = path
+            db.session.commit()
+            flask.flash("Picture updated!")
+            return flask.redirect("/upload")
     return flask.render_template("upload.html")
 
 
@@ -205,7 +211,7 @@ def login():
         )
         if found_user:
             login_user(found_user)
-            return flask.redirect("/")
+            return flask.redirect("/upload")
         else:
             flask.flash("This user does not exist!")
             return flask.redirect("/login")
