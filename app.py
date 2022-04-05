@@ -136,7 +136,9 @@ def get_poke_info_db():
 # returns list of strings
 def get_collection(userid):
     collection_list = newprofile.query.get(userid).collection.split(",")
-    collection_list.pop()
+    if collection_list[len(collection_list) - 1] == "":
+        # print("last empty")
+        collection_list.pop()
     return collection_list
 
 
@@ -148,27 +150,27 @@ def load_user(user_id):
     return newprofile.query.get(user_id)
 
 
-@app.route("/test")
-def test():
-    print(get_collection(1))
+# @app.route("/test")
+# def test():
+#     print(get_collection(1))
 
-    #     # user = newprofile(
-    #     #     usernamenew="asdasd",
-    #     #     passwordnew="password",
-    #     #     currentpoints=100,
-    #     #     lifetimepoints=100,
-    #     #     pic_path="a.png",
-    #     #     collection="1,4,6,12,",
-    #     # )
-    #     # db.session.add(user)
-    #     # db.session.commit()
+#     #     # user = newprofile(
+#     #     #     usernamenew="asdasd",
+#     #     #     passwordnew="password",
+#     #     #     currentpoints=100,
+#     #     #     lifetimepoints=100,
+#     #     #     pic_path="a.png",
+#     #     #     collection="1,4,6,12,",
+#     #     # )
+#     #     # db.session.add(user)
+#     #     # db.session.commit()
 
-    #     prof = newprofile.query.all()
-    #     print(prof[0].usernamenew)
+#     #     prof = newprofile.query.all()
+#     #     print(prof[0].usernamenew)
 
-    #     # prof = pokeinfo.query.all()
-    #     # print(prof[0].name)
-    return "<h1>test</h1>"
+#     #     # prof = pokeinfo.query.all()
+#     #     # print(prof[0].name)
+#     return "<h1>test</h1>"
 
 
 @app.route("/")
