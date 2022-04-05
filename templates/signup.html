@@ -2,21 +2,33 @@
 
 <head>
     <title>SignUpPage</title>
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='style.css' ) }} />
 </head>
 
 <body>
-    {% with messages = get_flashed_messages() %} {% if messages %}
+    <!-- {% with messages = get_flashed_messages() %} {% if messages %}
     <ul id="flashes" class="flashes">
         {% for message in messages %}
         <li>{{ message }}</li>
         {% endfor %}
     </ul>
-    {% endif %} {% endwith %}
-    <form method="POST" action="/signup">
-        <input type="text" name="user_name" placeholder="Enter username" /><br><br>
-        <input type="text" name="password" placeholder="Enter password" /><br><br>
-        <input type="submit" value="Sign Up" />
-    </form>
+    {% endif %} {% endwith %} -->
+    <div class="container">
+        <div class="header">
+            <h1>Sign Up</h1>
+        </div>
+        <div class="link">
+            <a href={{ url_for ('login')}}> Login </a>&nbsp&nbsp&nbsp&nbsp&nbsp
+            <a href={{ url_for ('game')}}> Home </a>
+        </div>
+    </div>
+    <div class="center">
+        <form method="POST" action="/signup">
+            <input type="text" name="user_name" placeholder="Enter username" /><br><br>
+            <input type="text" name="password" placeholder="Enter password" /><br><br>
+            <input type="submit" value="Sign Up" />
+        </form>
+    </div>
 </body>
 
 </html>
