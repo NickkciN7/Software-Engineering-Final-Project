@@ -187,8 +187,8 @@ def signup():
             return flask.redirect("/signup")
 
         found_user = (
-            newprofile.query.filter_by(username=user_name)
-            .filter_by(password=password)
+            newprofile.query.filter_by(usernamenew=user_name)
+            .filter_by(passwordnew=password)
             .first()
         )
         if found_user:
@@ -196,10 +196,12 @@ def signup():
             return flask.redirect("/signup")
         else:
             user = newprofile(
-                username=user_name,
-                password=password,
+                usernamenew=user_name,
+                passwordnew=password,
                 currentpoints=0,
                 lifetimepoints=0,
+                pic_path="",
+                collection="",
             )
             db.session.add(user)
             db.session.commit()
@@ -236,7 +238,7 @@ def upload():
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(path)
             curr_user = newprofile.query.filter_by(
-                username=current_user.username
+                usernamenew=current_user.usernamenew
             ).first()
             curr_user.pic_path = path
             db.session.commit()
@@ -254,8 +256,8 @@ def login():
         password = flask.request.form["password"]
 
         found_user = (
-            newprofile.query.filter_by(username=user_name)
-            .filter_by(password=password)
+            newprofile.query.filter_by(usernamenew=user_name)
+            .filter_by(passwordnew=password)
             .first()
         )
         if found_user:
@@ -280,7 +282,7 @@ def game():
     # print(current_user.currentpoints)
     return render_template(
         "game.html",
-        username=profile_for_game.username,
+        username=profile_for_game.usernamenew,
         currentpoints=profile_for_game.currentpoints,
     )
 
@@ -362,7 +364,7 @@ def profile():
     info = newprofile.query.filter_by(id=3).first()
     return render_template(
         "profile.html",
-        username=info.username,
+        username=info.usernamenew,
         currentpoints=info.currentpoints,
         lifetimepoints=info.lifetimepoints,
     )
