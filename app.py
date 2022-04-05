@@ -283,7 +283,7 @@ def gamedata():
         correct_image = all_info[correct_answers[i]]["imageurl"]
         current_correct_dict = {
             "name": correct_name,
-            "image_url": correct_image,
+            "imageurl": correct_image,
         }
         current_incorrect_list = []
         for j in range(3):
