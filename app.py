@@ -16,10 +16,9 @@ from flask_login import (
     login_required,
 )
 
-from flask_wtf import FlaskForm
-from wtforms import FileField, SubmitField
+
 from werkzeug.utils import secure_filename
-from wtforms.validators import InputRequired
+
 
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
@@ -307,6 +306,7 @@ def gamedata():
 
     # return "<h1>returns poke info</h1>"
 
+
 @app.route("/profile")
 def profile():
     info = profile.query.filter_by(id=3).first()
@@ -316,6 +316,7 @@ def profile():
         currentpoints=info.currentpoints,
         lifetimepoints=info.lifetimepoints,
     )
+
 
 @app.route("/profiledata")
 def profiledata():
@@ -329,6 +330,7 @@ def profiledata():
         poke_dict["ownedpokemon"] = i.ownedpokemon
         pokedata.append(poke_dict)
     return jsonify({"poke": pokedata})
+
 
 app.run(
     host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")), debug=True
