@@ -4,7 +4,7 @@ from pickle import APPEND
 import random
 from textwrap import indent
 import flask
-from flask import Flask, render_template, session
+from flask import Flask, render_template, session, jsonify
 
 import flask_login
 from flask_login import current_user, login_required
@@ -181,6 +181,28 @@ def gamedata():
 
     # return "<h1>returns poke info</h1>"
 
+@app.route("/profile")
+def profile():
+    info = profile.query.filter_by(id=3).first()
+    return render_template(
+        "profile.html",
+        username=info.username,
+        currentpoints=info.currentpoints,
+        lifetimepoints=info.lifetimepoints,
+    )
+
+@app.route("/profiledata")
+def profiledata():
+    # Setting ID to 3. Login function unfinished. Dict
+    # doesn't really exist yet. Placeholder for when store
+    # is finished.
+    poke = profile.query.filter_by(id=3).all()
+    pokedata = []
+    for i in poke:
+        poke_dict = {}
+        poke_dict["ownedpokemon"] = i.ownedpokemon
+        pokedata.append(poke_dict)
+    return jsonify({"poke": pokedata})
 
 app.run(
     host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")), debug=True
