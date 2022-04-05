@@ -59,35 +59,49 @@ db.init_app(app)
 login_manager.init_app(app)
 
 
-class profile(flask_login.UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120))
-    password = db.Column(db.String(120))
+class newprofile(flask_login.UserMixin, db.Model):
+    idnew = db.Column(db.Integer, primary_key=True)
+    usernamenew = db.Column(db.String(120))
+    passwordnew = db.Column(db.String(120))
     currentpoints = db.Column(db.Integer)
     lifetimepoints = db.Column(db.Integer)
-    # add profile pic in database
     pic_path = db.Column(db.String(255))
+    collection = db.Column(db.String(500))
 
 
 class pokeinfo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
-    imageurl = db.Column(db.String(500))
+    bulbaimageurl = db.Column(db.String(500))
+    pokeapiimageurl = db.Column(db.String(500))
 
 
 db.create_all()
 
-# start pokeinfo database related functions
+# start database related functions
 
 # THIS FUNCTION HAS ALREADY BEEN USED ONCE, DOESN'T NEED TO BE USED AGAIN
 # populate pokeinfo table. faster to use populated table
 # than using api everytime
-def updatePokeInfo():
+def populatePokeInfo():
     for i in range(1, GENERATION1_COUNT + 1):
-        pokemon_entry = pokeinfo.query.get(i)
-        pokemon_entry.imageurl = get_sprite(i)
+        pokename = get_name(i).capitalize()
+        spriteurl = get_sprite(i)
+        bulbaurl = (
+            "https://the-pokemasters.herokuapp.com/static/pokemon/"
+            + get_image_name(pokename, i)
+        )
+        entry = pokeinfo(
+            id=i, name=pokename, bulbaimageurl=bulbaurl, pokeapiimageurl=spriteurl
+        )
+        db.session.add(entry)
         db.session.commit()
         print(str(i) + ": done")
+
+
+def get_image_name(pokename, id):
+    # example 148Dragonair.png
+    return str(id).rjust(3, "0") + pokename + ".png"
 
 
 # get name from database based on id
@@ -99,28 +113,62 @@ def get_name_db(pokeid):
 # get image from db based on id
 def get_image_db(pokeid):
     pokemon_entry = pokeinfo.query.get(pokeid)
-    return pokemon_entry.imageurl
+    return pokemon_entry.bulbaimageurl
 
 
 def get_name_and_image_db(pokeid):
     pokemon_entry = pokeinfo.query.get(pokeid)
-    return {"name": pokemon_entry.name, "imageurl": pokemon_entry.imageurl}
+    return {"name": pokemon_entry.name, "imageurl": pokemon_entry.bulbaimageurl}
 
 
 def get_poke_info_db():
     all_info_query = pokeinfo.query.all()
     all_info = {}
     for poke in all_info_query:
-        all_info[poke.id] = {"name": poke.name, "imageurl": poke.imageurl}
+        all_info[poke.id] = {
+            "name": poke.name,
+            "bulbaimageurl": poke.bulbaimageurl,
+            "pokeapiimageurl": poke.pokeapiimageurl,
+        }
     return all_info
 
 
-# end pokeinfo database related functions
+# returns list of strings
+def get_collection(userid):
+    collection_list = newprofile.query.get(userid).collection.split(",")
+    collection_list.pop()
+    return collection_list
+
+
+# end database related functions
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return profile.query.get(user_id)
+    return newprofile.query.get(user_id)
+
+
+@app.route("/test")
+def test():
+    print(get_collection(1))
+
+    #     # user = newprofile(
+    #     #     usernamenew="asdasd",
+    #     #     passwordnew="password",
+    #     #     currentpoints=100,
+    #     #     lifetimepoints=100,
+    #     #     pic_path="a.png",
+    #     #     collection="1,4,6,12,",
+    #     # )
+    #     # db.session.add(user)
+    #     # db.session.commit()
+
+    #     prof = newprofile.query.all()
+    #     print(prof[0].usernamenew)
+
+    #     # prof = pokeinfo.query.all()
+    #     # print(prof[0].name)
+    return "<h1>test</h1>"
 
 
 @app.route("/")
@@ -139,7 +187,7 @@ def signup():
             return flask.redirect("/signup")
 
         found_user = (
-            profile.query.filter_by(username=user_name)
+            newprofile.query.filter_by(username=user_name)
             .filter_by(password=password)
             .first()
         )
@@ -147,7 +195,7 @@ def signup():
             flask.flash(f"User Name {user_name} already exists!")
             return flask.redirect("/signup")
         else:
-            user = profile(
+            user = newprofile(
                 username=user_name,
                 password=password,
                 currentpoints=0,
@@ -187,7 +235,9 @@ def upload():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(path)
-            curr_user = profile.query.filter_by(username=current_user.username).first()
+            curr_user = newprofile.query.filter_by(
+                username=current_user.username
+            ).first()
             curr_user.pic_path = path
             db.session.commit()
             flask.flash("Picture updated!")
@@ -204,7 +254,7 @@ def login():
         password = flask.request.form["password"]
 
         found_user = (
-            profile.query.filter_by(username=user_name)
+            newprofile.query.filter_by(username=user_name)
             .filter_by(password=password)
             .first()
         )
@@ -226,7 +276,7 @@ def logout():
 def game():
     # will use profile with id 3 always for now
     # later id will be current_user.id when flask login is implemented
-    profile_for_game = profile.query.filter_by(id=3).first()
+    profile_for_game = newprofile.query.filter_by(id=3).first()
     # print(current_user.currentpoints)
     return render_template(
         "game.html",
@@ -309,7 +359,7 @@ def gamedata():
 
 @app.route("/profile")
 def profile():
-    info = profile.query.filter_by(id=3).first()
+    info = newprofile.query.filter_by(id=3).first()
     return render_template(
         "profile.html",
         username=info.username,
@@ -323,7 +373,7 @@ def profiledata():
     # Setting ID to 3. Login function unfinished. Dict
     # doesn't really exist yet. Placeholder for when store
     # is finished.
-    poke = profile.query.filter_by(id=3).all()
+    poke = newprofile.query.filter_by(id=3).all()
     pokedata = []
     for i in poke:
         poke_dict = {}
