@@ -73,4 +73,5 @@ def get_image(name):
     # print(data)
 
 
-# get_sprite(35)
+for i in range(29, 35):
+    print(get_name(i))
