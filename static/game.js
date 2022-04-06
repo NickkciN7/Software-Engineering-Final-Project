@@ -1,4 +1,7 @@
 GUESS_NUMBER = 0;
+CAN_CLICK = true;
+NUM_CORRECT = 0;
+NUM_INCORRECT = 0;
 
 pokemon_info = JSON;
 
@@ -13,6 +16,7 @@ function updatePage() {
     image = document.getElementById("image");
     // set the image to the current pokemon to guess
     image.src = pokemon_info[GUESS_NUMBER].correct.imageurl;
+
     // a list of the pokemon names
     pokeNames = [];
     // push the correct pokemon name
@@ -39,4 +43,36 @@ function updatePage() {
     button4.innerText = buttonAssignment[3];
 
     GUESS_NUMBER += 1;
+}
+
+function answerSubmit(buttonNumber) {
+    if (!CAN_CLICK) {
+        return;
+    }
+    CAN_CLICK = false;
+    // console.log(document.getElementById("choice" + buttonNumber).innerText)
+    //GUESS_NUMBER - 1 because number already incremented when updatePage called 
+    // console.log(pokemon_info[GUESS_NUMBER - 1].correct.name)
+    if (pokemon_info[GUESS_NUMBER - 1].correct.name == document.getElementById("choice" + buttonNumber).innerText) {
+        document.getElementById("cORi").innerText = "CORRECT!";
+        document.getElementById("cORi").style.color = "Green";
+        NUM_CORRECT += 1;
+    } else {
+        document.getElementById("cORi").innerText = "INCORRECT!";
+        document.getElementById("cORi").style.color = "Red";
+        NUM_INCORRECT += 1;
+    }
+    document.getElementById("nextPokemon").style.display = "block";
+}
+
+//when next pokemon button is clicked
+// at end do something else!!!
+function next() {
+    document.getElementById("nextPokemon").style.display = "none";
+    document.getElementById("gameProg").innerText = GUESS_NUMBER + "/10";
+    document.getElementById("numCor").innerText = NUM_CORRECT;
+    document.getElementById("numIncor").innerText = NUM_INCORRECT;
+    updatePage();
+    //allow clicking again
+    CAN_CLICK = true;
 }

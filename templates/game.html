@@ -32,7 +32,7 @@
             left
         </div>
         <div class="middle">
-            <img id="image" src="" alt="pokemon" style="width: 300px;">
+            <img id="image" src="" alt="pokemon" style="width: 500px;">
         </div>
         <div class="sides">
             right
@@ -42,20 +42,32 @@
         <div class="button_divs">
             one
         </div>
-        <div class="button_divs">
+        <div class="button_divs" onclick="answerSubmit(1)">
             <button type="button" id="choice1">Pokemon 1</button>
         </div>
-        <div class="button_divs">
+        <div class="button_divs" onclick="answerSubmit(2)">
             <button type="button" id="choice2">Pokemon 2</button>
         </div>
-        <div class="button_divs">
+        <div class="button_divs" onclick="answerSubmit(3)">
             <button type="button" id="choice3">Pokemon 3</button>
         </div>
-        <div class="button_divs">
+        <div class="button_divs" onclick="answerSubmit(4)">
             <button type="button" id="choice4">Pokemon 4</button>
         </div>
         <div class="button_divs">
             six
+        </div>
+    </div>
+    <div class="container">
+        <div class="sides">
+            left
+        </div>
+        <div class="nextPokemon" id="nextPokemon">
+            <span id="cORi"></span><br><br>
+            <button type="button" onclick="next()">Next Pokemon</button>
+        </div>
+        <div class="sides">
+            right
         </div>
     </div>
 

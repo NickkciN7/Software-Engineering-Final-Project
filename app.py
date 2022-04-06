@@ -155,6 +155,11 @@ def index():
     return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
 
 
+@app.route("/test")
+def test():
+    return flask.jsonify(get_poke_info_db())
+
+
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if flask.request.method == "POST":
@@ -255,7 +260,7 @@ def logout():
 def game():
     # will use profile with id 3 always for now
     # later id will be current_user.id when flask login is implemented
-    profile_for_game = profile.query.filter_by(id=3).first()
+    profile_for_game = profile.query.filter_by(id=1).first()
     # print(current_user.currentpoints)
     return render_template(
         "game.html",
@@ -312,9 +317,8 @@ def gamedata():
     #         ...
     # ]
     for i in range(10):
-
         correct_name = all_info[correct_answers[i]]["name"]
-        correct_image = all_info[correct_answers[i]]["imageurl"]
+        correct_image = all_info[correct_answers[i]]["bulbaimageurl"]
         current_correct_dict = {
             "name": correct_name,
             "imageurl": correct_image,
