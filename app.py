@@ -59,10 +59,10 @@ db.init_app(app)
 login_manager.init_app(app)
 
 
-class newprofile(flask_login.UserMixin, db.Model):
-    idnew = db.Column(db.Integer, primary_key=True)
-    usernamenew = db.Column(db.String(120))
-    passwordnew = db.Column(db.String(120))
+class profile(flask_login.UserMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(120))
+    password = db.Column(db.String(120))
     currentpoints = db.Column(db.Integer)
     lifetimepoints = db.Column(db.Integer)
     pic_path = db.Column(db.String(255))
@@ -135,7 +135,7 @@ def get_poke_info_db():
 
 # returns list of strings
 def get_collection(userid):
-    collection_list = newprofile.query.get(userid).collection.split(",")
+    collection_list = profile.query.get(userid).collection.split(",")
     if collection_list[len(collection_list) - 1] == "":
         # print("last empty")
         collection_list.pop()
@@ -147,30 +147,7 @@ def get_collection(userid):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return newprofile.query.get(user_id)
-
-
-# @app.route("/test")
-# def test():
-#     print(get_collection(1))
-
-#     #     # user = newprofile(
-#     #     #     usernamenew="asdasd",
-#     #     #     passwordnew="password",
-#     #     #     currentpoints=100,
-#     #     #     lifetimepoints=100,
-#     #     #     pic_path="a.png",
-#     #     #     collection="1,4,6,12,",
-#     #     # )
-#     #     # db.session.add(user)
-#     #     # db.session.commit()
-
-#     #     prof = newprofile.query.all()
-#     #     print(prof[0].usernamenew)
-
-#     #     # prof = pokeinfo.query.all()
-#     #     # print(prof[0].name)
-#     return "<h1>test</h1>"
+    return profile.query.get(user_id)
 
 
 @app.route("/")
@@ -189,17 +166,17 @@ def signup():
             return flask.redirect("/signup")
 
         found_user = (
-            newprofile.query.filter_by(usernamenew=user_name)
-            .filter_by(passwordnew=password)
+            profile.query.filter_by(username=user_name)
+            .filter_by(password=password)
             .first()
         )
         if found_user:
             flask.flash(f"User Name {user_name} already exists!")
             return flask.redirect("/signup")
         else:
-            user = newprofile(
-                usernamenew=user_name,
-                passwordnew=password,
+            user = profile(
+                username=user_name,
+                password=password,
                 currentpoints=0,
                 lifetimepoints=0,
                 pic_path="",
@@ -239,9 +216,7 @@ def upload():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(path)
-            curr_user = newprofile.query.filter_by(
-                usernamenew=current_user.usernamenew
-            ).first()
+            curr_user = profile.query.filter_by(username=current_user.username).first()
             curr_user.pic_path = path
             db.session.commit()
             flask.flash("Picture updated!")
@@ -258,8 +233,8 @@ def login():
         password = flask.request.form["password"]
 
         found_user = (
-            newprofile.query.filter_by(usernamenew=user_name)
-            .filter_by(passwordnew=password)
+            profile.query.filter_by(username=user_name)
+            .filter_by(password=password)
             .first()
         )
         if found_user:
@@ -280,11 +255,11 @@ def logout():
 def game():
     # will use profile with id 3 always for now
     # later id will be current_user.id when flask login is implemented
-    profile_for_game = newprofile.query.filter_by(id=3).first()
+    profile_for_game = profile.query.filter_by(id=3).first()
     # print(current_user.currentpoints)
     return render_template(
         "game.html",
-        username=profile_for_game.usernamenew,
+        username=profile_for_game.username,
         currentpoints=profile_for_game.currentpoints,
     )
 
@@ -362,11 +337,11 @@ def gamedata():
 
 
 @app.route("/profile")
-def profile():
-    info = newprofile.query.filter_by(id=3).first()
+def profilepage():
+    info = profile.query.filter_by(id=3).first()
     return render_template(
         "profile.html",
-        username=info.usernamenew,
+        username=info.username,
         currentpoints=info.currentpoints,
         lifetimepoints=info.lifetimepoints,
     )
@@ -377,7 +352,7 @@ def profiledata():
     # Setting ID to 3. Login function unfinished. Dict
     # doesn't really exist yet. Placeholder for when store
     # is finished.
-    poke = newprofile.query.filter_by(id=3).all()
+    poke = profile.query.filter_by(id=3).all()
     pokedata = []
     for i in poke:
         poke_dict = {}
