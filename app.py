@@ -397,6 +397,26 @@ def profiledata():
         pokedata.append(poke_dict)
     return jsonify({"poke": pokedata})
 
+# Pull User and Poke Info from database
+@app.route("/store", methods=["GET", "POST"])
+def shopping():
+    pokemon_price = 10
+    user_info = profile.query.filter_by(id=1).first()
+    all_info = get_poke_info_db()
+    pokemon_info = {}
+    for poke in pokemon_info:
+        pokemon_info[poke.id] = {
+            "name": poke["name"],
+            "bulbaimageurl": poke["bulbaimageurl"],
+        }
+    
+    return render_template(
+        "store.html",
+     all_info=all_info,
+     username=user_info.username,
+      currentpoints=user_info.currentpoints, pokemon_price=pokemon_price,
+      )         
+
 
 app.run(
     host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")), debug=True

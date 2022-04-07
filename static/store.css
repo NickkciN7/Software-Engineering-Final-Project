@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-evenly;
+}
+
+body {
+    border-radius: 20px;
+    background-color: #c1e1ec;
+    width: 95%;   
+}
+
+
+#Poki-Card {
+    background-color:antiquewhite;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    
+    
+}
+.points {
+    background-color: #9acee0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
+    padding: 10px;
+  
+} 
+.Purchase {
+    background-color: antiquewhite;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+}
