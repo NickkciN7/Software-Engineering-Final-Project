@@ -172,11 +172,6 @@ def index():
     return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
 
 
-@app.route("/test")
-def test():
-    return flask.jsonify(get_poke_info_db())
-
-
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
     if flask.request.method == "POST":

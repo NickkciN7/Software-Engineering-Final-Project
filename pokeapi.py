@@ -73,5 +73,5 @@ def get_image(name):
     # print(data)
 
 
-for i in range(29, 35):
-    print(get_name(i))
+# for i in range(29, 35):
+#     print(get_name(i))
