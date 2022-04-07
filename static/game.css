@@ -31,7 +31,7 @@ body {
 
 .points {
     background-color: #9acee0;
-    width: 50%;
+    width: 75%;
     border-radius: 25px;
     padding: 10px;
     /* padding-top: 10px;
@@ -47,4 +47,14 @@ body {
     border-radius: 25px;
     padding: 15px;
     display: none;
+}
+
+.finish {
+    background-color: #9acee0;
+    text-align: center;
+    border-radius: 25px;
+    padding: 15px;
+    display: none;
+    width: 75%;
+    font-size: large;
 }
