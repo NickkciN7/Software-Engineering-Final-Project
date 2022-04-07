@@ -5,6 +5,7 @@ import random
 from textwrap import indent
 import flask
 from flask import Flask, render_template, session, url_for, jsonify
+from passlib.context import CryptContext
 
 import flask_login
 from flask_login import (
@@ -58,6 +59,8 @@ login_manager = LoginManager()
 db.init_app(app)
 login_manager.init_app(app)
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 
 class profile(flask_login.UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -97,6 +100,14 @@ def populatePokeInfo():
         db.session.add(entry)
         db.session.commit()
         print(str(i) + ": done")
+
+
+def get_hashed_password(plain_password):
+    return pwd_context.hash(plain_password)
+
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
 
 
 def get_image_name(pokename, id):
@@ -170,7 +181,7 @@ def test():
 def signup():
     if flask.request.method == "POST":
         user_name = flask.request.form["user_name"]
-        password = flask.request.form["password"]
+        password = get_hashed_password(flask.request.form["password"])
 
         if (len(user_name) == 0) or (len(password) == 0):
             flask.flash("username or password cannot be empty!")
@@ -243,17 +254,13 @@ def login():
         user_name = flask.request.form["user_name"]
         password = flask.request.form["password"]
 
-        found_user = (
-            profile.query.filter_by(username=user_name)
-            .filter_by(password=password)
-            .first()
-        )
+        found_user = profile.query.filter_by(username=user_name).first()
         if found_user:
-            login_user(found_user)
-            return flask.redirect("/upload")
-        else:
-            flask.flash("This user does not exist!")
-            return flask.redirect("/login")
+            if verify_password(password, found_user.password):
+                login_user(found_user)
+                return flask.redirect("/upload")
+        flask.flash("Incorrect password or username")
+        return flask.redirect("/login")
 
 
 @app.route("/logout", methods=["POST"])
