@@ -5,6 +5,7 @@ body {
 .container {
     display: flex;
     justify-content: space-evenly;
+    margin: 50px;
 }
 
 .width_20 {
@@ -26,13 +27,9 @@ body {
     justify-content: center;
 }
 
-button {
-    margin: 50px;
-}
-
 .points {
     background-color: #9acee0;
-    width: 50%;
+    width: 75%;
     border-radius: 25px;
     padding: 10px;
     /* padding-top: 10px;
@@ -40,4 +37,22 @@ button {
     padding-right: 5px;
     padding-bottom: 10px; */
     /* text-align: center; */
+}
+
+.nextPokemon {
+    background-color: #9acee0;
+    text-align: center;
+    border-radius: 25px;
+    padding: 15px;
+    display: none;
+}
+
+.finish {
+    background-color: #9acee0;
+    text-align: center;
+    border-radius: 25px;
+    padding: 15px;
+    display: none;
+    width: 75%;
+    font-size: large;
 }

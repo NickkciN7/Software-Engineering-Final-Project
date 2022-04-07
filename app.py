@@ -150,9 +150,20 @@ def load_user(user_id):
     return profile.query.get(user_id)
 
 
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    """redirect to login page if not signed in"""
+    return flask.redirect(flask.url_for("login"))
+
+
 @app.route("/")
 def index():
     return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
+
+
+@app.route("/test")
+def test():
+    return flask.jsonify(get_poke_info_db())
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -251,13 +262,15 @@ def logout():
     return flask.redirect("/login")
 
 
+# start game related routes
+
+
 @app.route("/game")
+@login_required
 def game():
     # will use profile with id 3 always for now
     # later id will be current_user.id when flask login is implemented
-    profile_for_game = profile.query.filter_by(id=1).first()
-    # print(profile_for_game.id)
-    # print(current_user.currentpoints)
+    profile_for_game = profile.query.get(current_user.id)
     return render_template(
         "game.html",
         username=profile_for_game.username,
@@ -266,6 +279,7 @@ def game():
 
 
 @app.route("/gamedata")
+@login_required
 def gamedata():
     all_info = get_poke_info_db()
     pokemon_info = []
@@ -313,7 +327,6 @@ def gamedata():
     #         ...
     # ]
     for i in range(10):
-
         correct_name = all_info[correct_answers[i]]["name"]
         correct_image = all_info[correct_answers[i]]["bulbaimageurl"]
         current_correct_dict = {
@@ -335,6 +348,29 @@ def gamedata():
     # print(json.dumps(pokemon_info, indent=2))
 
     # return "<h1>returns poke info</h1>"
+
+
+@app.route("/gamegetpoints")
+@login_required
+def gamegetpoints():
+    current_user_profile = profile.query.get(current_user.id)
+    profile_points = current_user_profile.currentpoints
+    return flask.jsonify({"points": profile_points})
+
+
+@app.route("/gameupdatepoints", methods=["GET", "POST"])
+@login_required
+def gameupdatepoints():
+    if flask.request.method == "POST":
+        data = flask.request.json
+        current_user_profile = profile.query.get(current_user.id)
+        current_user_profile.lifetimepoints += data["points"]
+        current_user_profile.currentpoints += data["points"]
+        db.session.commit()
+    return flask.jsonify(1)
+
+
+# end game related routes
 
 
 @app.route("/profile")
