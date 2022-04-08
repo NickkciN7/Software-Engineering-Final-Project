@@ -197,7 +197,7 @@ def signup():
                 password=password,
                 currentpoints=0,
                 lifetimepoints=0,
-                pic_path="",
+                pic_path="/static/files/default_pic.jpeg",
                 collection="1,4,7",  # change back to empty when store page is done
             )
             db.session.add(user)
@@ -234,7 +234,7 @@ def upload():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(path)
-            curr_user = profile.query.filter_by(username=current_user.username).first()
+            curr_user = profile.query.filter_by(username=current_user.id).first()
             curr_user.pic_path = path
             db.session.commit()
             flask.flash("Picture updated!")
@@ -377,11 +377,12 @@ def gameupdatepoints():
 
 
 @app.route("/profile", methods=["GET"])
+@login_required
 def profilepage():
     """
     Displays the currently logged in user info
     """
-    info = profile.query.filter_by(id=11).first()
+    info = profile.query.filter_by(id=current_user.id).first()
     return render_template(
         "profile.html",
         username=info.username,
@@ -392,12 +393,13 @@ def profilepage():
 
 
 @app.route("/profiledata")
+@login_required
 def profiledata():
     """
     Coverts collections into a dictionary to access on the profile page
     """
     pokelinfo = []
-    array = get_collection(11)
+    array = get_collection(current_user.id)
     array_num = [int(i) for i in array]
     allpoke = get_poke_info_db()
     total = len(array_num)

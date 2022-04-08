@@ -2,15 +2,41 @@
 
 <head>
     <title>UploadPage</title>
+    <style>
+        body {
+            background-color: #c1e1ec;
+            text-align: center;
+        }
+
+        .homediv {
+            position: fixed;
+            top: 5px;
+            right: 5px;
+            text-align: center;
+            /*center stuff inside*/
+            background-color: #8080ff;
+            padding: 20px;
+            border-radius: 25px;
+            /*rounded corners*/
+        }
+    </style>
 </head>
 
 <body>
+    <h1>Upload</h1>
     <form method="POST" action="/upload" enctype="multipart/form-data">
         <input type="file" name="file"><br><br>
         <input type="submit" value="Upload" />
     </form>
-    <a href={{ url_for ('login')}}> Log in </a>&nbsp&nbsp&nbsp&nbsp&nbsp
-    <a href={{ url_for ('game')}}> Start a new game </a>
+    <hr>
+    <a href="/profile">
+        <button>BACK TO PROFILE</button>
+    </a>
+    <div class="homediv">
+        <a href="/">
+            <button>HOME</button>
+        </a>
+    </div>
 </body>
 
 </html>
