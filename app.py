@@ -168,8 +168,9 @@ def unauthorized_callback():
 
 
 @app.route("/")
+@login_required
 def index():
-    return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
+    return render_template("home.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -197,12 +198,12 @@ def signup():
                 currentpoints=0,
                 lifetimepoints=0,
                 pic_path="",
-                collection="",
+                collection="1,4,7",  # change back to empty when store page is done
             )
             db.session.add(user)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
-            return flask.redirect("/signup")
+            return flask.redirect("/login")
 
         # if "file" not in flask.request.files:
         #     return "there is no files"
@@ -253,12 +254,12 @@ def login():
         if found_user:
             if verify_password(password, found_user.password):
                 login_user(found_user)
-                return flask.redirect("/upload")
+                return flask.redirect("/")
         flask.flash("Incorrect password or username")
         return flask.redirect("/login")
 
 
-@app.route("/logout", methods=["POST"])
+@app.route("/logout")
 def logout():
     logout_user()
     return flask.redirect("/login")
