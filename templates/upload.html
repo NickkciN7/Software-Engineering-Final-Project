@@ -5,18 +5,12 @@
 </head>
 
 <body>
-    <!-- {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul id="flashes" class="flashes">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %} {% endwith %} -->
     <form method="POST" action="/upload" enctype="multipart/form-data">
         <input type="file" name="file"><br><br>
         <input type="submit" value="Upload" />
     </form>
-    <a href={{ url_for ('login')}}> Log in </a>
+    <a href={{ url_for ('login')}}> Log in </a>&nbsp&nbsp&nbsp&nbsp&nbsp
+    <a href={{ url_for ('game')}}> Start a new game </a>
 </body>
 
 </html>
