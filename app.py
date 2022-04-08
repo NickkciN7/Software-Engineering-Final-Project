@@ -5,6 +5,7 @@ import random
 from textwrap import indent
 import flask
 from flask import Flask, render_template, session, url_for, jsonify
+
 from passlib.context import CryptContext
 
 import flask_login
@@ -352,7 +353,6 @@ def gamedata():
     # return "<h1>returns poke info</h1>"
 
 
-
 @app.route("/gamegetpoints")
 @login_required
 def gamegetpoints():
@@ -381,7 +381,7 @@ def profilepage():
     """
     Displays the currently logged in user info
     """
-    info = profile.query.filter_by(id=11).first()
+    info = profile.query.filter_by(id=1).first()
     return render_template(
         "profile.html",
         username=info.username,
@@ -397,7 +397,7 @@ def profiledata():
     Coverts collections into a dictionary to access on the profile page
     """
     pokelinfo = []
-    info = profile.query.filter_by(id=11).first()
+    info = profile.query.filter_by(id=1).first()
     array = info.collection.split(",")
     array_num = [int(i) for i in array]
     allpoke = get_poke_info_db()
@@ -411,6 +411,34 @@ def profiledata():
         }
         pokelinfo.append(cdict)
     return jsonify(pokelinfo)
+
+
+@app.route("/store")
+def shopping():
+    pokemon_price = 10
+    user_info = profile.query.filter_by(id=1).first()
+    all_info = get_poke_info_db()
+    poke_collection = get_collection(userid=1)
+    poke_collection_num = [int(i) for i in poke_collection]
+
+    return render_template(
+        "store.html",
+        all_info=all_info,
+        poke_collection=poke_collection,
+        username=user_info.username,
+        currentpoints=user_info.currentpoints,
+        pokemon_price=pokemon_price,
+    )
+
+
+@app.route("/purchasepokemon ", methods=["GET", "POST"])
+def purchasepokemon():
+    if flask.request.method == "POST":
+        data = flask.request.json
+        current_user_profile = profile.query.filter_by(id=1).first()
+        current_user_profile.collection += str(data["id"]) + ","
+        db.session.commit()
+    return flask.jsonify(1)
 
 
 app.run(
