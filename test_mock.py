@@ -1,3 +1,5 @@
+# pylint: disable=C0114,C0115,C0116,C0301
+
 import unittest
 from unittest.mock import MagicMock, patch
 from pokeapi import get_name, get_sprite
@@ -32,6 +34,3 @@ class PokeapiTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-
-
-# lecture 20 for continuous integration yaml
