@@ -352,7 +352,6 @@ def gamedata():
     # return "<h1>returns poke info</h1>"
 
 
-
 @app.route("/gamegetpoints")
 @login_required
 def gamegetpoints():
@@ -397,8 +396,7 @@ def profiledata():
     Coverts collections into a dictionary to access on the profile page
     """
     pokelinfo = []
-    info = profile.query.filter_by(id=11).first()
-    array = info.collection.split(",")
+    array = get_collection(11)
     array_num = [int(i) for i in array]
     allpoke = get_poke_info_db()
     total = len(array_num)
