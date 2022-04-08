@@ -1,10 +1,9 @@
+# pylint: disable=E1101,C0116,C0114,C0115,C0103,R0903,R1705
+
 import os
-import json
-from pickle import APPEND
 import random
-from textwrap import indent
 import flask
-from flask import Flask, render_template, session, url_for, jsonify
+from flask import Flask, render_template, jsonify
 from passlib.context import CryptContext
 
 import flask_login
@@ -13,7 +12,6 @@ from flask_login import (
     login_user,
     logout_user,
     current_user,
-    UserMixin,
     login_required,
 )
 
@@ -23,7 +21,7 @@ from werkzeug.utils import secure_filename
 
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
-from pokeapi import get_name, get_image, get_sprite
+from pokeapi import get_name, get_sprite
 
 # number of pokemon in the first generation
 GENERATION1_COUNT = 151
@@ -110,9 +108,9 @@ def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
 
-def get_image_name(pokename, id):
+def get_image_name(pokename, pokeid):
     # example 148Dragonair.png
-    return str(id).rjust(3, "0") + pokename + ".png"
+    return str(pokeid).rjust(3, "0") + pokename + ".png"
 
 
 # get name from database based on id
@@ -148,7 +146,6 @@ def get_poke_info_db():
 def get_collection(userid):
     collection_list = profile.query.get(userid).collection.split(",")
     if collection_list[len(collection_list) - 1] == "":
-        # print("last empty")
         collection_list.pop()
     return collection_list
 
@@ -168,8 +165,9 @@ def unauthorized_callback():
 
 
 @app.route("/")
+@login_required
 def index():
-    return "<h1>Welcome To Our Webpage for PokeMasters!!</h1>"
+    return render_template("home.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -196,21 +194,13 @@ def signup():
                 password=password,
                 currentpoints=0,
                 lifetimepoints=0,
-                pic_path="",
-                collection="",
+                pic_path="/static/files/default_pic.jpeg",
+                collection="1,4,7",  # change back to empty when store page is done
             )
             db.session.add(user)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
-            return flask.redirect("/signup")
-
-        # if "file" not in flask.request.files:
-        #     return "there is no files"
-        # else:
-        #     file = flask.request.files["file"]
-        #     path = os.path.join(app.config["UPLOAD_FOLDER"], file.filename)
-        #     file.save(path)
-        #     return "file has been uploaded"
+            return flask.redirect("/login")
 
     else:
         return flask.render_template("signup.html")
@@ -233,7 +223,7 @@ def upload():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(path)
-            curr_user = profile.query.filter_by(username=current_user.username).first()
+            curr_user = profile.query.filter_by(id=current_user.id).first()
             curr_user.pic_path = path
             db.session.commit()
             flask.flash("Picture updated!")
@@ -253,12 +243,12 @@ def login():
         if found_user:
             if verify_password(password, found_user.password):
                 login_user(found_user)
-                return flask.redirect("/upload")
+                return flask.redirect("/")
         flask.flash("Incorrect password or username")
         return flask.redirect("/login")
 
 
-@app.route("/logout", methods=["POST"])
+@app.route("/logout")
 def logout():
     logout_user()
     return flask.redirect("/login")
@@ -291,11 +281,6 @@ def gamedata():
     # populate available ids from 1 to 151
     for i in range(1, GENERATION1_COUNT + 1):
         available_ids.append(i)
-    # for i in range(len(available_ids)):
-    #     nAndIm = get_name_and_image_db(available_ids[i])
-    #     print("name: " + nAndIm["name"] + " " + "imageurl: " + nAndIm["imageurl"])
-    # for i in available_ids:
-    #     print(str(i) + " ")
 
     # get 10 random ids from available ids as correct answers to the guessing game
     # remove the id from the available_ids when selected
@@ -315,19 +300,7 @@ def gamedata():
                 random_index = random.randint(0, len(available_ids) - 1)
             curr_incor.append(available_ids[random_index])
         incorrect_answers.append(curr_incor)
-    # print(correct_answers)
-    # print(incorrect_answers)
-    # [
-    #         {
-    #             correct: {id: num, name: name1, url: theurl},
-    #             incorrect: [{id: num, name: name1},{id: num, name: name1},{id: num, name: name1}]
-    #         },
-    #         {
-    #             correct: {id: num, name: name1, url: theurl},
-    #             incorrect: [{id: num, name: name1},{id: num, name: name1},{id: num, name: name1}]
-    #         },
-    #         ...
-    # ]
+
     for i in range(10):
         correct_name = all_info[correct_answers[i]]["name"]
         correct_image = all_info[correct_answers[i]]["bulbaimageurl"]
@@ -345,11 +318,6 @@ def gamedata():
         pokemon_info.append(current_guess_info)
 
     return flask.jsonify(pokemon_info)
-
-    # print(pokemon_info)
-    # print(json.dumps(pokemon_info, indent=2))
-
-    # return "<h1>returns poke info</h1>"
 
 
 @app.route("/gamegetpoints")
@@ -376,11 +344,12 @@ def gameupdatepoints():
 
 
 @app.route("/profile", methods=["GET"])
+@login_required
 def profilepage():
     """
     Displays the currently logged in user info
     """
-    info = profile.query.filter_by(id=11).first()
+    info = profile.query.filter_by(id=current_user.id).first()
     return render_template(
         "profile.html",
         username=info.username,
@@ -391,12 +360,13 @@ def profilepage():
 
 
 @app.route("/profiledata")
+@login_required
 def profiledata():
     """
     Coverts collections into a dictionary to access on the profile page
     """
     pokelinfo = []
-    array = get_collection(11)
+    array = get_collection(current_user.id)
     array_num = [int(i) for i in array]
     allpoke = get_poke_info_db()
     total = len(array_num)

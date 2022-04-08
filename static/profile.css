@@ -1,3 +1,8 @@
+body {
+    background-color: #c1e1ec;
+    text-align: center;
+}
+
 #profile {
     width: 150px;
     height: 200px;
@@ -6,4 +11,17 @@
 img {
     width: 90px;
     height: 100px;
+}
+
+
+.homediv {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    text-align: center;
+    /*center stuff inside*/
+    background-color: #8080ff;
+    padding: 20px;
+    border-radius: 25px;
+    /*rounded corners*/
 }

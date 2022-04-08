@@ -1,5 +1,6 @@
+# pylint: disable=C0114,C0115,C0116,C0301
+
 import requests
-import json
 
 BASE_URL = "https://pokeapi.co/api/v2/"
 
@@ -8,19 +9,18 @@ BASE_URL = "https://pokeapi.co/api/v2/"
 BASE_URL_BULBA = "https://bulbapedia.bulbagarden.net/w/api.php"
 
 
-def get_name(id):
+def get_name(pokeid):
     # I believe pokemon-species returns less json than just pokemon
     # so using that instead to speed things up
-    poke_species_url = BASE_URL + "pokemon-species/" + str(id)
-    # poke_species_url = BASE_URL + "pokemon-species/" + str(35)
+    poke_species_url = BASE_URL + "pokemon-species/" + str(pokeid)
     response = requests.get(poke_species_url)
     data = response.json()
     # note that the name is uncapitalized
     return data["name"]
 
 
-def get_sprite(id):
-    poke_url = BASE_URL + "pokemon/" + str(id)
+def get_sprite(pokeid):
+    poke_url = BASE_URL + "pokemon/" + str(pokeid)
     response = requests.get(poke_url)
     data = response.json()
     return data["sprites"]["front_default"]
@@ -52,10 +52,9 @@ def get_image(name):
         "pageids": page_id,
         "format": "json",
     }
-    # response = requests.get(BASE_URL_WIKI, params=params)
+
     response = requests.get(BASE_URL_BULBA, params=params)
     data = response.json()
-    # print(json.dumps(data, indent=2))
 
     data_to_pages = data["query"]["pages"]
     # next key in json is the title page id, but we don't know that yet.
@@ -68,10 +67,5 @@ def get_image(name):
         # numeric key is most likely just the title page id
         if i.isnumeric():
             title_id = i
-    # print(i)
+
     return data["query"]["pages"][title_id]["thumbnail"]["source"]
-    # print(data)
-
-
-# for i in range(29, 35):
-#     print(get_name(i))
