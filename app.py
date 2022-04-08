@@ -234,7 +234,7 @@ def upload():
             filename = secure_filename(file.filename)
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
             file.save(path)
-            curr_user = profile.query.filter_by(username=current_user.id).first()
+            curr_user = profile.query.filter_by(id=current_user.id).first()
             curr_user.pic_path = path
             db.session.commit()
             flask.flash("Picture updated!")

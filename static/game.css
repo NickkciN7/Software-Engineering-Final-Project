@@ -56,3 +56,15 @@ body {
     width: 75%;
     font-size: large;
 }
+
+.homediv {
+    position: fixed;
+    top: 5px;
+    right: 5px;
+    text-align: center;
+    /*center stuff inside*/
+    background-color: #8080ff;
+    padding: 20px;
+    border-radius: 25px;
+    /*rounded corners*/
+}
