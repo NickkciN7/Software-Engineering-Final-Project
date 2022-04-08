@@ -35,7 +35,7 @@ ALLOWED_EXTENSIONS = {"txt", "pdf", "png", "jpg", "jpeg", "gif"}
 
 load_dotenv(find_dotenv())
 app = Flask(__name__)
-app.secret_key = b'_5#y2L"F4Q8zkdifenrk/ec]/'
+app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
