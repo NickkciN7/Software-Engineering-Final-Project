@@ -437,13 +437,14 @@ def shopping():
     )
 
 
-@app.route("/purchasepokemon ", methods=["GET", "POST"])
+@app.route("/purchasepokemon", methods=["GET", "POST"])
 def purchasepokemon():
     if flask.request.method == "POST":
         data = flask.request.json
-        current_user_profile = profile.query.filter_by(id=1).first()
-        current_user_profile.collection += str(data["id"]) + ","
-        db.session.commit()
+        print(data["id"])
+        # current_user_profile = profile.query.filter_by(id=1).first()
+        # current_user_profile.collection += str(data["id"]) + ","
+        # db.session.commit()
     return flask.jsonify(1)
 
 
