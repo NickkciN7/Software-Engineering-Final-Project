@@ -337,29 +337,41 @@ def gamedata():
     # return "<h1>returns poke info</h1>"
 
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET"])
 def profilepage():
-    info = profile.query.filter_by(id=3).first()
+    """
+    Displays the currently logged in user info
+    """
+    info = profile.query.filter_by(id=11).first()
     return render_template(
         "profile.html",
         username=info.username,
         currentpoints=info.currentpoints,
         lifetimepoints=info.lifetimepoints,
+        picpath=info.pic_path,
     )
 
 
 @app.route("/profiledata")
 def profiledata():
-    # Setting ID to 3. Login function unfinished. Dict
-    # doesn't really exist yet. Placeholder for when store
-    # is finished.
-    poke = profile.query.filter_by(id=3).all()
-    pokedata = []
-    for i in poke:
-        poke_dict = {}
-        poke_dict["ownedpokemon"] = i.ownedpokemon
-        pokedata.append(poke_dict)
-    return jsonify({"poke": pokedata})
+    """
+    Coverts collections into a dictionary to access on the profile page
+    """
+    pokelinfo = []
+    info = profile.query.filter_by(id=11).first()
+    array = info.collection.split(",")
+    array_num = [int(i) for i in array]
+    allpoke = get_poke_info_db()
+    total = len(array_num)
+    for i in range(total):
+        name = allpoke[array_num[i]]["name"]
+        imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+        cdict = {
+            "name": name,
+            "imageurl": imgurl,
+        }
+        pokelinfo.append(cdict)
+    return jsonify(pokelinfo)
 
 
 app.run(

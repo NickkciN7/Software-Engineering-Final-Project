@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <head>
     <title>Profile Page - Pokemasters</title>
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='profile.css' ) }} />
 </head>
 <body>
-    <h1>Welcome</h1>
+    <h1>Welcome {{ username }}</h1>
+    <img id="profile" src=https://the-pokemasters.herokuapp.com/{{picpath}}/>
+    <h3>Current points: {{ currentpoints }}</h3>
+    <h3>Lifetime points: {{ lifetimepoints }}</h3>
+    <div id="myData"/>
+    <script type="text/javascript" src="/static/profile.js"></script>
 </body>
