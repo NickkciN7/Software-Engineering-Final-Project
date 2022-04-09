@@ -23,4 +23,5 @@ module.exports = {
     'no-var': 'off',
     'prefer-arrow-callback': 'off',
   },
+
 };

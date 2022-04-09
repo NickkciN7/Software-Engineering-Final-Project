@@ -1,6 +1,5 @@
 
 window.onload = (event) => {
-
 	for (i = 1; i <= 151; i++) {
 		button = document.getElementById(i);
 		(function (index) {
