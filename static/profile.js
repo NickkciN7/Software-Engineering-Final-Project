@@ -7,9 +7,12 @@ fetch("/profiledata")
   });
 function appendData(data) {
   var mainContainer = document.getElementById("myData");
-  for (var i = 0; i < data.length; i++) {
-    var div = document.createElement("div");
-    var img = new Image();
+  var i = 0;
+  var div = null;
+  var image = null;
+  for (i = 0; i < data.length; i++) {
+    div = document.createElement("div");
+    img = new Image();
     img.src = data[i].imageurl;
     div.innerHTML = "Name: " + data[i].name;
     mainContainer.appendChild(div);

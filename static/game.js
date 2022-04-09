@@ -13,7 +13,6 @@ window.onload = (event) => {
     fetch('/gamegetpoints').then(response => response.json()).then(data => { PROFILE_POINTS = data.points; });
 };
 
-
 // load all images in different img tags because loading each turn causes lag ~2-3 seconds
 function initializeImages() {
     for (i = 1; i <= 10; i++) {
@@ -28,7 +27,7 @@ function updatePage() {
 
     document.getElementById(curr_id).style.display = "inline-block";
     // set the image to the current pokemon to guess
-    if (GUESS_NUMBER != 0) {
+    if (GUESS_NUMBER !== 0) {
         prev_id = "image" + (GUESS_NUMBER).toString();
         document.getElementById(prev_id).style.display = "none";
     }
@@ -41,7 +40,7 @@ function updatePage() {
     pokeNames = pokeNames.concat(pokemon_info[GUESS_NUMBER].incorrect);
     // randomly assign pokemon names to 1 of the 4 buttons
     buttonAssignment = [];
-    for (var i = 1; i <= 4; i++) {
+    for (i = 1; i <= 4; i++) {
         currentIndex = Math.floor(Math.random() * pokeNames.length);
         buttonAssignment.push(pokeNames[currentIndex]);
         pokeNames.splice(currentIndex, 1);
@@ -67,9 +66,9 @@ function answerSubmit(buttonNumber) {
     }
     CAN_CLICK = false;
 
-    //GUESS_NUMBER - 1 because number already incremented when updatePage called 
+    // GUESS_NUMBER - 1 because number already incremented when updatePage called
 
-    if (pokemon_info[GUESS_NUMBER - 1].correct.name == document.getElementById("choice" + buttonNumber).innerText) {
+    if (pokemon_info[GUESS_NUMBER - 1].correct.name === document.getElementById("choice" + buttonNumber).innerText) {
         document.getElementById("cORi").innerText = "CORRECT!";
         document.getElementById("cORi").style.color = "Green";
         NUM_CORRECT += 1;
@@ -80,15 +79,13 @@ function answerSubmit(buttonNumber) {
     }
 
     document.getElementById("nextPokemon").style.display = "block";
-    if (GUESS_NUMBER == 10) {
+    if (GUESS_NUMBER === 10) {
         document.getElementById("nextPokeButton").style.display = "none";
         document.getElementById("resultsButton").style.display = "inline-block";
     }
-
 }
 
-
-//when next pokemon button is clicked
+// when next pokemon button is clicked
 // at end do something else!!!
 function next() {
     document.getElementById("nextPokemon").style.display = "none";
@@ -96,11 +93,11 @@ function next() {
     document.getElementById("numCor").innerText = NUM_CORRECT;
     document.getElementById("numIncor").innerText = NUM_INCORRECT;
     updatePage();
-    //allow clicking again
+    // allow clicking again
     CAN_CLICK = true;
 }
 
-//display results
+// display results
 function finish() {
     document.getElementById("game").style.display = "none";
     document.getElementById("finish").style.display = "block";
