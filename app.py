@@ -383,6 +383,9 @@ def profiledata():
 
 @app.route("/store")
 def shopping():
+    """
+    Displays the store page
+    """
     pokemon_price = 10
     user_info = profile.query.get(current_user.id)
     all_info = get_poke_info_db()
@@ -401,16 +404,23 @@ def shopping():
 
 @app.route("/purchasepokemon", methods=["GET", "POST"])
 def purchasepokemon():
+    """
+    Purchases pokemon from the store
+    """
     pokemon_price = 10
     if flask.request.method == "POST":
         data = flask.request.json
         current_user_profile = profile.query.get(current_user.id)
         if current_user_profile.currentpoints >= pokemon_price:
             current_user_profile.collection += str(data["id"]) + ","
+            current_user_profile.currentpoints -= pokemon_price
             db.session.commit()
         elif current_user_profile.currentpoints < pokemon_price:
             return jsonify({"error": "not enough points"})
-    return jsonify({"success": "success"})
+        elif current_user_profile.currentpoints < pokemon_price:
+            return jsonify({"sorry": "you already own"})
+
+    return jsonify(1)
 
 
 app.run(
