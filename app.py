@@ -195,7 +195,7 @@ def signup():
                 currentpoints=0,
                 lifetimepoints=0,
                 pic_path="/static/files/default_pic.jpeg",
-                collection="1,4,7",  # change back to empty when store page is done
+                collection="",
             )
             db.session.add(user)
             db.session.commit()
