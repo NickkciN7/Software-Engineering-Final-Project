@@ -41,7 +41,7 @@ PokeMasters also uses a number of dependencies which can be installed by running
 - **DB_URL:** The database url you get after adding Postgresql.
 - **SECRET_KEY:** A randomly generated secret key to encrypt sessions.
 
-## Linting
+## 🛠️ Linting
 ### Python
 ### Javascript
 no-undef: Off because we don't need to declare a variable with var or const
