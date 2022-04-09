@@ -1,0 +1,37 @@
+<html>
+
+<head>
+	<link rel="stylesheet" href={{ url_for( 'static' , filename='store.css' ) }} />
+
+</head>
+
+<body>
+	<div class="container">
+		<div class="points">
+			Username: {{username}}
+			<br>
+			Current Points:<span id="profPoints">{{currentpoints}}</span>
+			<br>
+		</div>
+	</div>
+	{% for i in range(1,152) %}
+	<div style="background-color: c1e1ec; width: 300px; display: inline-block; margin: 10px;">
+		<img src={{all_info[i].bulbaimageurl}} width="300px">
+		<div id="Poki-Card">
+			<div>Pokemon ID: {{i}}</div><br>
+			<div>Pokemon Name: {{all_info[i].name}}</div> <br>
+			<div>Pokemon Price: <span id="pokemonCost">{{pokemon_price}}</span></div>
+		</div>
+		<div class="Purchase">
+			<button type="button" id="{{i}}">Purchase: {{i}}</button>
+		</div>
+	</div>
+	{% if i%5 == 0 %}
+	<br>
+	{% endif %}
+	{% endfor %}
+	</div>
+	<script src="/static/store.js" async></script>
+</body>
+
+</html>
