@@ -1,4 +1,4 @@
-# pylint: disable=E1101,C0116,C0114,C0115,C0103,R0903,R1705
+# pylint: disable = E1101, C0116, C0114, C0115, C0103, R0903, R1705
 
 import os
 import random
@@ -379,6 +379,38 @@ def profiledata():
         }
         pokelinfo.append(cdict)
     return jsonify(pokelinfo)
+
+
+@app.route("/store")
+def shopping():
+    pokemon_price = 10
+    user_info = profile.query.get(current_user.id)
+    all_info = get_poke_info_db()
+    poke_collection = get_collection(userid=1)
+    poke_collection_num = [int(i) for i in poke_collection]
+
+    return render_template(
+        "store.html",
+        all_info=all_info,
+        poke_collection_num=poke_collection_num,
+        username=user_info.username,
+        currentpoints=user_info.currentpoints,
+        pokemon_price=pokemon_price,
+    )
+
+
+@app.route("/purchasepokemon", methods=["GET", "POST"])
+def purchasepokemon():
+    pokemon_price = 10
+    if flask.request.method == "POST":
+        data = flask.request.json
+        current_user_profile = profile.query.get(current_user.id)
+        if current_user_profile.currentpoints >= pokemon_price:
+            current_user_profile.collection += str(data["id"]) + ","
+            db.session.commit()
+        elif current_user_profile.currentpoints < pokemon_price:
+            return jsonify({"error": "not enough points"})
+    return jsonify({"success": "success"})
 
 
 app.run(
