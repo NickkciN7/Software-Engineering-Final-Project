@@ -5,8 +5,6 @@
 </p>
 
 ---
-## URL
-https://the-pokemasters.herokuapp.com/
 
 ## 🔋 Requirements
 
