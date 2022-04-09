@@ -1,6 +1,7 @@
 <p align='center'>
   <h3 align="center">PokeMasters</h3>
   <p align="center">A web application built with Python and the PokeAPI to simulate the guessing game featured on the original Pokémon show during the commercial bumpers.</p>
+  <p align="center">https://the-pokemasters.herokuapp.com/</p>
 </p>
 
 ---
@@ -42,7 +43,7 @@ PokeMasters also uses a number of dependencies which can be installed by running
 - **DB_URL:** The database url you get after adding Postgresql.
 - **SECRET_KEY:** A randomly generated secret key to encrypt sessions.
 
-## Linting
+## 🛠️ Linting
 ### Python
 1. E1101: %s %r has no %r member: Issue with sqlalchemy but sqlalchemy is ok
 2. C0103: doesn't conform to PascalCase naming style (invalid-name): PascalCase is a subjective naming style
@@ -62,3 +63,4 @@ PokeMasters also uses a number of dependencies which can be installed by running
 8. prefer-template: Was giving error about string concatentation not being expected
 9. prefer-destructuring: I don't prefer using array destructuring
 10. prefer-arrow-callback: Used in fetch.
+
