@@ -39,3 +39,16 @@ PokeMasters also uses a number of dependencies which can be installed by running
 
 - **DB_URL:** The database url you get after adding Postgresql.
 - **SECRET_KEY:** A randomly generated secret key to encrypt sessions.
+
+## Linting
+### Python
+### Javascript
+no-undef: Off because we don't need to declare a variable with var or const
+camelcase: Off because camelcase is a subjective preference
+no-unused-vars: Off because was giving error with word "event" and window.onload. But you need "event"
+arrow-paren: Off because not needed,
+no-use-before-define: I like to define things in order that seems chronological in usage,
+no-plusplus: I prefer ++
+quotes: I don't think everything should be single quotes
+prefer-template: Was giving error about string concatentation not being expected
+prefer-destructuring: I don't prefer using array destructuring
