@@ -5,6 +5,8 @@
 </p>
 
 ---
+## URL
+https://the-pokemasters.herokuapp.com/
 
 ## 🔋 Requirements
 
@@ -43,13 +45,22 @@ PokeMasters also uses a number of dependencies which can be installed by running
 
 ## 🛠️ Linting
 ### Python
+1. E1101: %s %r has no %r member: Issue with sqlalchemy but sqlalchemy is ok
+2. C0103: doesn't conform to PascalCase naming style (invalid-name): PascalCase is a subjective naming style
+3. C0115: Missing class docstring (missing-class-docstring): The classes are just tables for database
+3. C0114: Missing module docstring (missing-module-docstring): We give overview of website above in readme
+4. C0116: Missing function or method docstring (missing-function-docstring): Most function names clearly describe what the function does
+5. R0903: Too few public methods (0/2) (too-few-public-methods): The classes for tables in database don't need public methods typed out
+6. R1705: Unnecessary "else" after "return" (no-else-return): Unnecessary, but causes no issues.
 ### Javascript
-no-undef: Off because we don't need to declare a variable with var or const<br />
-camelcase: Off because camelcase is a subjective preference<br />
-no-unused-vars: Off because was giving error with word "event" and window.onload. But you need "event"<br />
-arrow-paren: Off because not needed<br />
-no-use-before-define: I like to define things in order that seems chronological in usage<br />
-no-plusplus: I prefer ++<br />
-quotes: I don't think everything should be single quotes<br />
-prefer-template: Was giving error about string concatentation not being expected<br />
-prefer-destructuring: I don't prefer using array destructuring<br />
+1. no-undef: Off because we don't need to declare a variable with var or const
+2. camelcase: Off because camelcase is a subjective preference
+3. no-unused-vars: Off because was giving error with word "event" and window.onload. But you need "event"
+4. arrow-paren: Off because not needed,
+5. no-use-before-define: I like to define things in order that seems chronological in usage,
+6. no-plusplus: I prefer ++
+7. quotes: I don't think everything should be single quotes
+8. prefer-template: Was giving error about string concatentation not being expected
+9. prefer-destructuring: I don't prefer using array destructuring
+10. prefer-arrow-callback: Used in fetch.
+
