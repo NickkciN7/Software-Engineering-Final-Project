@@ -44,12 +44,12 @@ PokeMasters also uses a number of dependencies which can be installed by running
 ## 🛠️ Linting
 ### Python
 ### Javascript
-no-undef: Off because we don't need to declare a variable with var or const
-camelcase: Off because camelcase is a subjective preference
-no-unused-vars: Off because was giving error with word "event" and window.onload. But you need "event"
-arrow-paren: Off because not needed,
-no-use-before-define: I like to define things in order that seems chronological in usage,
-no-plusplus: I prefer ++
-quotes: I don't think everything should be single quotes
-prefer-template: Was giving error about string concatentation not being expected
-prefer-destructuring: I don't prefer using array destructuring
+no-undef: Off because we don't need to declare a variable with var or const<br />
+camelcase: Off because camelcase is a subjective preference<br />
+no-unused-vars: Off because was giving error with word "event" and window.onload. But you need "event"<br />
+arrow-paren: Off because not needed<br />
+no-use-before-define: I like to define things in order that seems chronological in usage<br />
+no-plusplus: I prefer ++<br />
+quotes: I don't think everything should be single quotes<br />
+prefer-template: Was giving error about string concatentation not being expected<br />
+prefer-destructuring: I don't prefer using array destructuring<br />
