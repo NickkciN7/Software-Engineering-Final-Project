@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='ranking.css' ) }} />
+</head>
+
+<body>
+    <div method="POST">
+        <div class="Row">
+            <div class="Column">{{user_ranking[0].username}}</div>
+            <div class="Column">{{user_ranking[1].username}}</div>
+            <div class="Column">{{user_ranking[2].username}}</div>
+        </div>
+        {% for user in user_ranking %}
+        <div class="list">
+            <ol>
+                <li>{{user.username}}</li>
+                <li>{{user.currentpoints}}</li>
+            </ol>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script type="text/javascript" src="/static/ranking.js"></script>
+</body>
+
+</html>
