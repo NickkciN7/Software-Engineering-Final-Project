@@ -423,22 +423,11 @@ def purchasepokemon():
     return jsonify(1)
 
 
-# def sort(list, element):
-#     i = 0
-#     for each in list:
-#         i = i + 1
-#         if each.element > list[i].element:
-#             swap(list, i)
-#     return list
-
-
 @app.route("/ranking", methods=["GET", "POST"])
 def ranking():
-    # if flask.request.method == "POST":
-    # data = flask.request.json
     user_list = profile.query.all()
     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints)
-    return render_template("leaderboard.html", user_ranking=user_ranking,)
+    return render_template("ranking.html", user_ranking=user_ranking,)
 
 
 app.run(
