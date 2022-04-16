@@ -426,7 +426,7 @@ def purchasepokemon():
 @app.route("/ranking", methods=["GET", "POST"])
 def ranking():
     user_list = profile.query.all()
-    user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints)
+    user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
     return render_template("ranking.html", user_ranking=user_ranking,)
 
 
