@@ -423,6 +423,21 @@ def purchasepokemon():
     return jsonify(1)
 
 
+@app.route("/ranking", methods=["GET", "POST"])
+def ranking():
+    user_list = profile.query.all()
+    user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
+    return render_template("ranking.html", user_ranking=user_ranking,)
+
+
+@app.route("/user_profile/<user_id>", methods=["GET", "POST"])
+def user_profile(user_id):
+    if flask.request.method == "GET":
+        print(user_id)
+        user_info = profile.query.filter_by(id=user_id).first()
+        return render_template("userProfile.html", user_info=user_info,)
+
+
 app.run(
     host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")), debug=True
 )
