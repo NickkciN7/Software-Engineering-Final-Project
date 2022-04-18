@@ -180,11 +180,7 @@ def signup():
             flask.flash("username or password cannot be empty!")
             return flask.redirect("/signup")
 
-        found_user = (
-            profile.query.filter_by(username=user_name)
-            .filter_by(password=password)
-            .first()
-        )
+        found_user = profile.query.filter_by(username=user_name).first()
         if found_user:
             flask.flash(f"User Name {user_name} already exists!")
             return flask.redirect("/signup")
@@ -433,9 +429,23 @@ def ranking():
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
 def user_profile(user_id):
     if flask.request.method == "GET":
-        print(user_id)
         user_info = profile.query.filter_by(id=user_id).first()
         return render_template("userProfile.html", user_info=user_info,)
+
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if flask.request.method == "GET":
+        return flask.render_template("ranking.html")
+    else:
+        search_name = flask.request.form["search_name"]
+        found_user = profile.query.filter_by(username=search_name).first()
+        if found_user:
+            return render_template("userProfile.html", user_info=found_user,)
+        else:
+            flask.flash("No user found")
+            return flask.redirect("/ranking")
+    # return flask.redirect("/userProfile.html")
 
 
 app.run(
