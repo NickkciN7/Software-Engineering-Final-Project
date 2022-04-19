@@ -194,8 +194,10 @@ def signup():
                 pic_path="/static/files/default_pic.jpeg",
                 collection="",
             )
-            user_version = version(version=version,)
             db.session.add(user)
+            db.session.commit()
+            db.session.refresh(user)
+            user_version = version(userid=user.id, version=version,)
             db.session.add(user_version)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
@@ -423,6 +425,7 @@ def purchasepokemon():
 
 
 @app.route("/ranking", methods=["GET", "POST"])
+@login_required
 def ranking():
     if flask.request.method == "POST":
         user_list = profile.query.all()
@@ -435,18 +438,52 @@ def ranking():
     return render_template("ranking.html")
 
 
-# @app.route("/reverse_ranking", methods=["GET", "POST"])
-# def reverse_ranking():
-#     user_list = profile.query.all()
-#     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
-#     return render_template("ranking.html", user_ranking=user_ranking,)
+@app.route("/leaderboard", methods=["GET", "POST"])
+@login_required
+def leaderboard():
+    user_list = profile.query.all()
+    user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
+    return render_template("ranking.html", user_ranking=user_ranking,)
+
+
+# def get_poke(id):
+#     pokelinfo = []
+#     array = get_collection(id)
+#     array_num = [int(i) for i in array]
+#     allpoke = get_poke_info_db()
+#     total = len(array_num)
+#     for i in range(total):
+#         name = allpoke[array_num[i]]["name"]
+#         imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+#         cdict = {
+#             "name": name,
+#             "imageurl": imgurl,
+#         }
+#         pokelinfo.append(cdict)
 
 
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
 def user_profile(user_id):
     if flask.request.method == "GET":
+        # user info
         user_info = profile.query.filter_by(id=user_id).first()
-        return render_template("userProfile.html", user_info=user_info,)
+        # pokemon info
+        pokelinfo = []
+        array = get_collection(user_id)
+        array_num = [int(i) for i in array]
+        allpoke = get_poke_info_db()
+        total = len(array_num)
+        for i in range(total):
+            name = allpoke[array_num[i]]["name"]
+            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+            cdict = {
+                "name": name,
+                "imageurl": imgurl,
+            }
+            pokelinfo.append(cdict)
+        return render_template(
+            "userProfile.html", user_info=user_info, pokelinfo=pokelinfo,
+        )
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -456,8 +493,23 @@ def search():
     else:
         search_name = flask.request.form["search_name"]
         found_user = profile.query.filter_by(username=search_name).first()
+        pokelinfo = []
+        array = get_collection(found_user.id)
+        array_num = [int(i) for i in array]
+        allpoke = get_poke_info_db()
+        total = len(array_num)
+        for i in range(total):
+            name = allpoke[array_num[i]]["name"]
+            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+            cdict = {
+                "name": name,
+                "imageurl": imgurl,
+            }
+            pokelinfo.append(cdict)
         if found_user:
-            return render_template("userProfile.html", user_info=found_user,)
+            return render_template(
+                "userProfile.html", user_info=found_user, pokelinfo=pokelinfo,
+            )
         else:
             flask.flash("No user found")
             return flask.redirect("/ranking")

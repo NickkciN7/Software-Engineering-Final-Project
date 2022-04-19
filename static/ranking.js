@@ -1,9 +1,3 @@
-var head = document.getElementsByTagName('HEAD')[0];
-var link = document.createElement('link');
-link.rel = 'stylesheet';
-link.type = 'text/css';
-link.href = 'style.css';
-head.appendChild(link);
 
 fetch("/ranking", {
     method: "POST",
@@ -17,9 +11,9 @@ function listSorted(data) {
     for (var i = 0; i < data.length; i++) {
         var listItem = document.createElement('li');
         var userList = document.createElement('a')
-        userList.textContent = data[i].username;
+        userList.textContent = data[i].username.padEnd(100, '.');
         userList.href = "/user_profile/" + data[i].id
-        var userPoints = document.createTextNode(data[i].lifetimepoints);
+        var userPoints = document.createTextNode(data[i].lifetimepoints + ' points');
         // userPoints.className = "right";
         var div = document.createElement("div");
         div.appendChild(userList);
@@ -47,5 +41,20 @@ function sortDesc() {
         method: "POST",
     }).then(res => res.json())
         .then(data => listSorted(data.user_list.reverse()));
+}
+
+function appendData(data) {
+    var mainContainer = document.getElementById("userData");
+    var i = 0;
+    var div = null;
+    var image = null;
+    for (i = 0; i < data.length; i++) {
+        div = document.createElement("div");
+        img = new Image();
+        img.src = data[i].imageurl;
+        div.innerHTML = "Name: " + data[i].name;
+        mainContainer.appendChild(div);
+        mainContainer.appendChild(img);
+    }
 }
 
