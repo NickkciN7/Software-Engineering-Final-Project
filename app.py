@@ -174,6 +174,7 @@ def index():
 def signup():
     if flask.request.method == "POST":
         user_name = flask.request.form["user_name"]
+        version = flask.request.form["version"]
         password = get_hashed_password(flask.request.form["password"])
 
         if (len(user_name) == 0) or (len(password) == 0):
@@ -193,7 +194,9 @@ def signup():
                 pic_path="/static/files/default_pic.jpeg",
                 collection="",
             )
+            user_version = version(version=version,)
             db.session.add(user)
+            db.session.add(user_version)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
             return flask.redirect("/login")
@@ -421,9 +424,22 @@ def purchasepokemon():
 
 @app.route("/ranking", methods=["GET", "POST"])
 def ranking():
-    user_list = profile.query.all()
-    user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
-    return render_template("ranking.html", user_ranking=user_ranking,)
+    if flask.request.method == "POST":
+        user_list = profile.query.all()
+        user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints)
+        user_ranking_text = [
+            {"username": n.username, "lifetimepoints": n.lifetimepoints, "id": n.id}
+            for n in user_ranking
+        ]
+        return flask.jsonify({"user_list": user_ranking_text})
+    return render_template("ranking.html")
+
+
+# @app.route("/reverse_ranking", methods=["GET", "POST"])
+# def reverse_ranking():
+#     user_list = profile.query.all()
+#     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
+#     return render_template("ranking.html", user_ranking=user_ranking,)
 
 
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
