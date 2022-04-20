@@ -23,23 +23,38 @@ body {
     /* Legacy iOS */
 }
 
-.container {
-    transform-style: preserve-3d;
+/*makes div size of page with 1 cell*/
+.page {
     display: grid;
-    grid-gap: 10px;
-    grid-template-columns: [c] 100px [c] 200px [c] 200px [c] 200px [c] 200px [c];
-    /*repeat(5, [c] 200px);*/
-    grid-template-rows: [r] 100px [r] 500px [r] 150px [r];
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #2B2121;
-    border-radius: 0px 25px 25px 0px;
-    z-index: 1000;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    width: 98vw;
+    height: 98vh;
 }
 
-/* .container::before {
+/* is the single cell of the page grid. will be coupled with centered_div class to center the containter div within */
+.pageSingleCell {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+
+.container {
+    /* transform-style: preserve-3d; */
+    grid-column: 1;
+    grid-row: 1;
+    display: grid;
+    width: 900px;
+    grid-template-columns: [c] 200px [c] 200px [c] 200px [c] 200px [c] 100px [c];
+    /*repeat(5, [c] 200px);*/
+    height: 750px;
+    grid-template-rows: [r] 100px [r] 500px [r] 150px [r];
+    background-color: #2B2121;
+    border-radius: 25px 25px 25px 25px;
+    /* z-index: 1; */
+}
+
+.container::before {
     content: '';
     background-image: url(../static/images/pokeball.png);
     background-size: contain;
@@ -48,8 +63,9 @@ body {
     height: 600px;
     z-index: -1;
     margin-left: -244px;
-    margin-top: -10px;
-} */
+    margin-top: 75px;
+    /*half height of container*/
+}
 
 .box {
     background-color: black;
@@ -60,7 +76,7 @@ body {
 }
 
 .title {
-    grid-column: c 2 / span 4;
+    grid-column: c 1 / span 4;
     grid-row: r;
 }
 
@@ -74,17 +90,24 @@ body {
 }
 
 .pic {
-    grid-column: c 3 / span 2;
+    grid-column: c 2 / span 2;
     grid-row: r 2;
 }
 
+.results {
+    grid-column: c 1 / span 4;
+    grid-row: r 1 / span 3;
+    text-align: center;
+    display: none;
+}
+
 .progress {
-    grid-column: c;
+    grid-column: c 5;
     grid-row: r / span 3;
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
-    border-right: solid;
+    border-left: solid;
 }
 
 .progress_text {
@@ -92,6 +115,10 @@ body {
 }
 
 .ball {
+    width: 50px;
+}
+
+.x {
     width: 50px;
 }
 
@@ -137,7 +164,7 @@ body {
 
 
 .choices {
-    grid-column: c 2 / span 4;
+    grid-column: c 1 / span 4;
     grid-row: r 3;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -170,7 +197,7 @@ button {
 
 .next {
     display: hidden;
-    grid-column: c 2 / span 4;
+    grid-column: c 1 / span 4;
     grid-row: r 3;
 }
 

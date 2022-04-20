@@ -68,13 +68,16 @@ function answerSubmit(buttonNumber) {
 
     // GUESS_NUMBER - 1 because number already incremented when updatePage called
 
+    ballid = "ball" + GUESS_NUMBER + "_img";
     if (pokemon_info[GUESS_NUMBER - 1].correct.name === document.getElementById("choice" + buttonNumber).innerText) {
         document.getElementById("cORi").innerText = "CORRECT!";
         document.getElementById("cORi").style.color = "Green";
+        document.getElementById(ballid).src = "../static/images/pokeball.png";
         NUM_CORRECT += 1;
     } else {
         document.getElementById("cORi").innerText = "INCORRECT!";
         document.getElementById("cORi").style.color = "Red";
+        document.getElementById(ballid).src = "../static/images/redX.png";
         NUM_INCORRECT += 1;
     }
 
@@ -92,6 +95,8 @@ function answerSubmit(buttonNumber) {
 // at end do something else!!!
 function next() {
     document.getElementById("nextPokemon").style.display = "none";
+    document.getElementById("next").style.display = "none";
+    document.getElementById("choices").style.display = "grid";
     // document.getElementById("gameProg").innerText = GUESS_NUMBER + "/10";
     // document.getElementById("numCor").innerText = NUM_CORRECT;
     // document.getElementById("numIncor").innerText = NUM_INCORRECT;
@@ -102,7 +107,9 @@ function next() {
 
 // display results
 function finish() {
-    document.getElementById("game").style.display = "none";
+    document.getElementById("pic").style.display = "none";
+    document.getElementById("next").style.display = "none";
+    document.getElementById("title").style.display = "none";
     document.getElementById("finish").style.display = "block";
     document.getElementById("cor").innerText = NUM_CORRECT;
     document.getElementById("cor2").innerText = NUM_CORRECT;

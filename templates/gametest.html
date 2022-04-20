@@ -6,84 +6,95 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="progress">
-            <div class="progress_text centered_div ">Progress</div>
-            <div class="ball1 centered_div">
-                <img class="ball" id="ball1_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball2 centered_div">
-                <img class="ball" id="ball2_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball3 centered_div">
-                <img class="ball" id="ball3_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball4 centered_div">
-                <img class="ball" id="ball4_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball5 centered_div">
-                <img class="ball" id="ball5_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball6 centered_div">
-                <img class="ball" id="ball6_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball7 centered_div">
-                <img class="ball" id="ball7_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball8 centered_div">
-                <img class="ball" id="ball8_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball9 centered_div">
-                <img class="ball" id="ball9_img" src="../static/images/pokeball_grey.png">
-            </div>
-            <div class="ball10 centered_div">
-                <img class="ball" id="ball10_img" src="../static/images/pokeball_grey.png">
-            </div>
-        </div>
-        <div class="title centered_div ">
-            <h1>Who's That Pokemon?</h1>
-        </div>
-        <div class="pic centered_div ">
-            <div class="pokemon_card">
-                <img id="image1" src="https://the-pokemasters-v2.herokuapp.com/static/pokemon/001Bulbasaur.png"
-                    alt="pokemon" style="width: 400px;">
-                <img id="image2" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image3" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image4" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image5" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image6" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image7" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image8" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image9" src="" alt="pokemon" style="width: 400px; display: none;">
-                <img id="image10" src="" alt="pokemon" style="width: 400px; display: none;">
-            </div>
+    <div class="page">
+        <div class="pageSingleCell centered_div">
+            <div class="container">
+                <div class="progress">
+                    <div class="progress_text centered_div ">Progress</div>
+                    <div class="ball1 centered_div">
+                        <img class="ball" id="ball1_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball2 centered_div">
+                        <img class="ball" id="ball2_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball3 centered_div">
+                        <img class="ball" id="ball3_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball4 centered_div">
+                        <img class="ball" id="ball4_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball5 centered_div">
+                        <img class="ball" id="ball5_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball6 centered_div">
+                        <img class="ball" id="ball6_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball7 centered_div">
+                        <img class="ball" id="ball7_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball8 centered_div">
+                        <img class="ball" id="ball8_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball9 centered_div">
+                        <img class="ball" id="ball9_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                    <div class="ball10 centered_div">
+                        <img class="ball" id="ball10_img" src="../static/images/pokeball_grey.png">
+                    </div>
+                </div>
+                <div class="title centered_div" id="title">
+                    <h1>Who's That Pokemon?</h1>
+                </div>
+                <div class="pic centered_div " id="pic">
+                    <div class="pokemon_card">
+                        <img id="image1" src="" alt="pokemon" style="width: 400px;">
+                        <img id="image2" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image3" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image4" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image5" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image6" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image7" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image8" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image9" src="" alt="pokemon" style="width: 400px; display: none;">
+                        <img id="image10" src="" alt="pokemon" style="width: 400px; display: none;">
+                    </div>
+                </div>
+                <div class="results centered_div" id="finish">
+                    <h1>Game Finished</h1>
+                    Correct Guesses: <span id="cor">4</span><br>
+                    Incorrect Guesses: <span id="incor">5</span><br><br>
+                    <span id="cor2">4</span> point(s) have been applied to your profile<br>
+                    Updated Profile Points: <span id="updatedpoints">104</span><br><br>
 
-        </div>
-        <div class="choices" id="choices">
-            <div class="b1 centered_div">
-                <button type="button" id="choice1" onclick="answerSubmit(1)">Pokemon 1</button>
-            </div>
-            <div class="b2 centered_div">
-                <button type="button" id="choice2" onclick="answerSubmit(2)">Pokemon 2</button>
-            </div>
-            <div class="b3 centered_div">
-                <button type="button" id="choice3" onclick="answerSubmit(3)">Pokemon 3</button>
-            </div>
-            <div class="b4 centered_div">
-                <button type="button" id="choice4" onclick="answerSubmit(4)">Pokemon 4</button>
-            </div>
-        </div>
-        <div class="next centered_div">
-            <div class="nextPokemon" id="nextPokemon">
-                <span id="cORi"></span><br><br>
-                <button id="nextPokeButton" type="button" onclick="next()">Next Pokemon</button>
-                <button id="resultsButton" type="button" onclick="finish()" style="display: none;">Goto Results</button>
+                    <button type="button" onClick="window.location.reload();">Play Again?</button>
+                </div>
+                <div class="choices" id="choices">
+                    <div class="b1 centered_div">
+                        <button type="button" id="choice1" onclick="answerSubmit(1)">Pokemon 1</button>
+                    </div>
+                    <div class="b2 centered_div">
+                        <button type="button" id="choice2" onclick="answerSubmit(2)">Pokemon 2</button>
+                    </div>
+                    <div class="b3 centered_div">
+                        <button type="button" id="choice3" onclick="answerSubmit(3)">Pokemon 3</button>
+                    </div>
+                    <div class="b4 centered_div">
+                        <button type="button" id="choice4" onclick="answerSubmit(4)">Pokemon 4</button>
+                    </div>
+                </div>
+                <div class="next centered_div" id="next">
+                    <div class="nextPokemon" id="nextPokemon">
+                        <span id="cORi"></span><br><br>
+                        <button id="nextPokeButton" type="button" onclick="next()">Next Pokemon</button>
+                        <button id="resultsButton" type="button" onclick="finish()" style="display: none;">Show
+                            Results</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-
-    <!-- <script type="text/javascript" src="/static/game.js"></script> -->
+    <script type="text/javascript" src="/static/game.js"></script>
 </body>
 
 </html>
