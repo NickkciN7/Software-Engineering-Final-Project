@@ -204,7 +204,10 @@ def signup():
             db.session.add(user)
             db.session.commit()
             db.session.refresh(user)
-            user_version_data = version(userid=user.id, version=user_version,)
+            user_version_data = version(
+                userid=user.id,
+                version=user_version,
+            )
             db.session.add(user_version_data)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
@@ -268,14 +271,8 @@ def logout():
 @app.route("/game")
 @login_required
 def game():
-    # will use profile with id 3 always for now
-    # later id will be current_user.id when flask login is implemented
     profile_for_game = profile.query.get(current_user.id)
-    return render_template(
-        "gametest.html",
-        username=profile_for_game.username,
-        currentpoints=profile_for_game.currentpoints,
-    )
+    return render_template("game.html", currentpoints=profile_for_game.currentpoints)
 
 
 @app.route("/gamedata")
@@ -460,6 +457,7 @@ def leaderboard():
         user_ranking=user_ranking,
     )
 
+
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
 def user_profile(user_id):
     if flask.request.method == "GET":
@@ -481,7 +479,9 @@ def user_profile(user_id):
             }
             pokelinfo.append(cdict)
         return render_template(
-            "userProfile.html", user_info=user_info, pokelinfo=pokelinfo,
+            "userProfile.html",
+            user_info=user_info,
+            pokelinfo=pokelinfo,
         )
 
 
@@ -507,7 +507,9 @@ def search():
             pokelinfo.append(cdict)
         if found_user:
             return render_template(
-                "userProfile.html", user_info=found_user, pokelinfo=pokelinfo,
+                "userProfile.html",
+                user_info=found_user,
+                pokelinfo=pokelinfo,
             )
         else:
             flask.flash("No user found")

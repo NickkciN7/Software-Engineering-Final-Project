@@ -97,9 +97,6 @@ function next() {
     document.getElementById("nextPokemon").style.display = "none";
     document.getElementById("next").style.display = "none";
     document.getElementById("choices").style.display = "grid";
-    // document.getElementById("gameProg").innerText = GUESS_NUMBER + "/10";
-    // document.getElementById("numCor").innerText = NUM_CORRECT;
-    // document.getElementById("numIncor").innerText = NUM_INCORRECT;
     updatePage();
     // allow clicking again
     CAN_CLICK = true;
