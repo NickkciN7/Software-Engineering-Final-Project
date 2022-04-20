@@ -79,6 +79,11 @@ class pokeinfo(db.Model):
     pokeapiimageurl = db.Column(db.String(500))
 
 
+class version(db.Model):
+    userid = db.Column(db.Integer, primary_key=True)
+    version = db.Column(db.String(10))
+
+
 db.create_all()
 
 # start database related functions
@@ -176,7 +181,7 @@ def index():
 def signup():
     if flask.request.method == "POST":
         user_name = flask.request.form["user_name"]
-        version = flask.request.form["version"]
+        user_version = flask.request.form["version"]
         password = get_hashed_password(flask.request.form["password"])
 
         if (len(user_name) == 0) or (len(password) == 0):
@@ -199,8 +204,8 @@ def signup():
             db.session.add(user)
             db.session.commit()
             db.session.refresh(user)
-            user_version = version(userid=user.id, version=version,)
-            db.session.add(user_version)
+            user_version_data = version(userid=user.id, version=user_version,)
+            db.session.add(user_version_data)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
             return flask.redirect("/login")
@@ -418,7 +423,7 @@ def purchasepokemon():
         current_user_profile = profile.query.get(current_user.id)
         if current_user_profile.currentpoints >= pokemon_price:
             if data["id"] in poke_collection_num:
-                return jsonify ({"error": "already in collection"})
+                return jsonify({"error": "already in collection"})
             else:
                 current_user_profile.collection += str(data["id"]) + ","
                 current_user_profile.currentpoints -= pokemon_price
@@ -427,7 +432,6 @@ def purchasepokemon():
         else:
             current_user_profile.currentpoints < pokemon_price
             return jsonify({"error": "not enough points"})
-       
 
     return jsonify(1)
 
