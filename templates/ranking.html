@@ -6,10 +6,24 @@
 </head>
 
 <body>
-    <div method="POST">
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul id="flashes" class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
+    <div>
         <div class="header">
             <h1>LeaderBoard</h1>
         </div>
+        <div>
+            <form class="search" method="POST" action="/search">
+                <input type="text" name="search_name" placeholder="Search Here" />
+                <input type="submit" value="Search" />
+            </form>
+        </div>
+        <br><br>
         <div class="Row">
             <div class="Column">
                 <h3>No.1</h3>
@@ -27,25 +41,33 @@
                 Total Points: {{user_ranking[2].lifetimepoints}}<br><br>
             </div>
         </div>
-        <div class="list">
-            <ol>
+        <!-- <div class="list">
+            <div class="left">
+                Users
+            </div>
+            <div class="right">
+                Total Lifttime Points
+            </div>
+        </div><br> -->
+        <div class="right">
+            <button onclick="sortAsc()" class="sortAsc">Ascending</button>
+            <button onclick="sortDesc()" class="sortDesc">Descending</button>
+        </div>
+        <div id="display_list" />
+
+        <!-- <ol>
                 {% for user in user_ranking %}
                 <li>
-                    <div>
-                        {{user.username}}
+                    <div id="{{user.id}}">
+                        <a href=" /user_profile/{{user.id}}">{{user.username}}</a>
                     </div>
-                    <div>
-                        {{user.lifetimepoints}}&nbsp&nbsp&nbsp&nbsp&nbsp
-                        <a href="/user_profile/{{user.id}}">
-                            <button type="button" id="{{user.id}}">More Info</button>
-                        </a>
+                    <div class="right">
+                        {{user.lifetimepoints}} Points
                     </div>
                 </li>
                 {% endfor %}
-            </ol>
-        </div>
+            </ol> -->
     </div>
-
     <script type="text/javascript" src="/static/ranking.js"></script>
 </body>
 

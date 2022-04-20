@@ -1,5 +1,7 @@
 # pylint: disable = E1101, C0116, C0114, C0115, C0103, R0903, R1705
-
+import json
+from typing import Collection
+from flask import Flask, flash
 import os
 import random
 import flask
@@ -179,17 +181,14 @@ def index():
 def signup():
     if flask.request.method == "POST":
         user_name = flask.request.form["user_name"]
+        user_version = flask.request.form["version"]
         password = get_hashed_password(flask.request.form["password"])
 
         if (len(user_name) == 0) or (len(password) == 0):
             flask.flash("username or password cannot be empty!")
             return flask.redirect("/signup")
 
-        found_user = (
-            profile.query.filter_by(username=user_name)
-            .filter_by(password=password)
-            .first()
-        )
+        found_user = profile.query.filter_by(username=user_name).first()
         if found_user:
             flask.flash(f"User Name {user_name} already exists!")
             return flask.redirect("/signup")
@@ -203,6 +202,10 @@ def signup():
                 collection="",
             )
             db.session.add(user)
+            db.session.commit()
+            db.session.refresh(user)
+            user_version_data = version(userid=user.id, version=user_version,)
+            db.session.add(user_version_data)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
             return flask.redirect("/login")
@@ -415,21 +418,41 @@ def purchasepokemon():
     pokemon_price = 10
     if flask.request.method == "POST":
         data = flask.request.json
+        poke_collection = get_collection(current_user.id)
+        poke_collection_num = [int(i) for i in poke_collection]
         current_user_profile = profile.query.get(current_user.id)
         if current_user_profile.currentpoints >= pokemon_price:
-            current_user_profile.collection += str(data["id"]) + ","
-            current_user_profile.currentpoints -= pokemon_price
-            db.session.commit()
-        elif current_user_profile.currentpoints < pokemon_price:
+            if data["id"] in poke_collection_num:
+                return jsonify({"error": "already in collection"})
+            else:
+                current_user_profile.collection += str(data["id"]) + ","
+                current_user_profile.currentpoints -= pokemon_price
+                db.session.commit()
+                return jsonify({"success": "pokemon purchased"})
+        else:
+            current_user_profile.currentpoints < pokemon_price
             return jsonify({"error": "not enough points"})
-        elif current_user_profile.currentpoints < pokemon_price:
-            return jsonify({"sorry": "you already own"})
 
     return jsonify(1)
 
 
 @app.route("/ranking", methods=["GET", "POST"])
+@login_required
 def ranking():
+    if flask.request.method == "POST":
+        user_list = profile.query.all()
+        user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints)
+        user_ranking_text = [
+            {"username": n.username, "lifetimepoints": n.lifetimepoints, "id": n.id}
+            for n in user_ranking
+        ]
+        return flask.jsonify({"user_list": user_ranking_text})
+    return render_template("ranking.html")
+
+
+@app.route("/leaderboard", methods=["GET", "POST"])
+@login_required
+def leaderboard():
     user_list = profile.query.all()
     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
     return render_template(
@@ -437,16 +460,59 @@ def ranking():
         user_ranking=user_ranking,
     )
 
-
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
 def user_profile(user_id):
     if flask.request.method == "GET":
-        print(user_id)
+        # user info
         user_info = profile.query.filter_by(id=user_id).first()
+
+        # pokemon info
+        pokelinfo = []
+        array = get_collection(user_id)
+        array_num = [int(i) for i in array]
+        allpoke = get_poke_info_db()
+        total = len(array_num)
+        for i in range(total):
+            name = allpoke[array_num[i]]["name"]
+            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+            cdict = {
+                "name": name,
+                "imageurl": imgurl,
+            }
+            pokelinfo.append(cdict)
         return render_template(
-            "userProfile.html",
-            user_info=user_info,
+            "userProfile.html", user_info=user_info, pokelinfo=pokelinfo,
         )
+
+
+@app.route("/search", methods=["GET", "POST"])
+def search():
+    if flask.request.method == "GET":
+        return flask.render_template("ranking.html")
+    else:
+        search_name = flask.request.form["search_name"]
+        found_user = profile.query.filter_by(username=search_name).first()
+        pokelinfo = []
+        array = get_collection(found_user.id)
+        array_num = [int(i) for i in array]
+        allpoke = get_poke_info_db()
+        total = len(array_num)
+        for i in range(total):
+            name = allpoke[array_num[i]]["name"]
+            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+            cdict = {
+                "name": name,
+                "imageurl": imgurl,
+            }
+            pokelinfo.append(cdict)
+        if found_user:
+            return render_template(
+                "userProfile.html", user_info=found_user, pokelinfo=pokelinfo,
+            )
+        else:
+            flask.flash("No user found")
+            return flask.redirect("/ranking")
+    # return flask.redirect("/userProfile.html")
 
 
 app.run(
