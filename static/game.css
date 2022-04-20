@@ -1,5 +1,7 @@
 body {
-    background-color: #c1e1ec;
+    background-color: #DFD4D4;
+    font-family: "VT323";
+    color: white;
 }
 
 .container {
@@ -21,6 +23,13 @@ body {
     text-align: center;
 }
 
+button {
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 25px;
+}
+
 .button_divs {
     flex-basis: 16.7%;
     display: flex;
@@ -28,7 +37,7 @@ body {
 }
 
 .points {
-    background-color: #9acee0;
+    background-color: #2B2121;
     width: 75%;
     border-radius: 25px;
     padding: 10px;
@@ -63,8 +72,49 @@ body {
     right: 5px;
     text-align: center;
     /*center stuff inside*/
-    background-color: #8080ff;
+    background-color: #2B2121;
     padding: 20px;
     border-radius: 25px;
     /*rounded corners*/
+}
+
+@font-face {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    /* Exact URLs below for the fonts. Figured compability for most browsers since it was included in the font download. */
+    src: url('fonts/vt323-v15-latin-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''), url('fonts/vt323-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('fonts/vt323-v15-latin-regular.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('fonts/vt323-v15-latin-regular.woff') format('woff'),
+        /* Modern Browsers */
+        url('fonts/vt323-v15-latin-regular.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('fonts/vt323-v15-latin-regular.svg#VT323') format('svg');
+    /* Legacy iOS */
+}
+
+#card {
+    width: 814.62px;
+    height: 510px;
+    border-radius: 71px 71px 117px 117px;
+    display: flex;
+    margin-left: 200px;
+    align-items: center;
+    background-color: #2B2121;
+}
+
+#card::before {
+    content: '';
+    background-image: url(../images/pokeball.png);
+    background-size: contain;
+    position: fixed;
+    width: 600px;
+    height: 600px;
+    z-index: -1;
+    margin-left: -244px;
+    margin-top: -10px;
 }

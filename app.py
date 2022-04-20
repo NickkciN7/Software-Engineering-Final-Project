@@ -77,6 +77,11 @@ class pokeinfo(db.Model):
     pokeapiimageurl = db.Column(db.String(500))
 
 
+class version(db.Model):
+    userid = db.Column(db.Integer, primary_key=True)
+    version = db.Column(db.String(10))
+
+
 db.create_all()
 
 # start database related functions
@@ -89,7 +94,7 @@ def populatePokeInfo():
         pokename = get_name(i).capitalize()
         spriteurl = get_sprite(i)
         bulbaurl = (
-            "https://the-pokemasters.herokuapp.com/static/pokemon/"
+            "https://the-pokemasters-v2.herokuapp.com/static/pokemon/"
             + get_image_name(pokename, i)
         )
         entry = pokeinfo(
@@ -264,7 +269,7 @@ def game():
     # later id will be current_user.id when flask login is implemented
     profile_for_game = profile.query.get(current_user.id)
     return render_template(
-        "game.html",
+        "gametest.html",
         username=profile_for_game.username,
         currentpoints=profile_for_game.currentpoints,
     )
@@ -427,7 +432,10 @@ def purchasepokemon():
 def ranking():
     user_list = profile.query.all()
     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
-    return render_template("ranking.html", user_ranking=user_ranking,)
+    return render_template(
+        "ranking.html",
+        user_ranking=user_ranking,
+    )
 
 
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
@@ -435,7 +443,10 @@ def user_profile(user_id):
     if flask.request.method == "GET":
         print(user_id)
         user_info = profile.query.filter_by(id=user_id).first()
-        return render_template("userProfile.html", user_info=user_info,)
+        return render_template(
+            "userProfile.html",
+            user_info=user_info,
+        )
 
 
 app.run(
