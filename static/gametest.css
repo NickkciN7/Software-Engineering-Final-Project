@@ -1,0 +1,194 @@
+body {
+    background-color: #DFD4D4;
+    font-family: "VT323";
+    color: white;
+}
+
+@font-face {
+    font-family: 'VT323';
+    font-style: normal;
+    font-weight: 400;
+    /* Exact URLs below for the fonts. Figured compability for most browsers since it was included in the font download. */
+    src: url('fonts/vt323-v15-latin-regular.eot');
+    /* IE9 Compat Modes */
+    src: local(''), url('fonts/vt323-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
+        /* IE6-IE8 */
+        url('fonts/vt323-v15-latin-regular.woff2') format('woff2'),
+        /* Super Modern Browsers */
+        url('fonts/vt323-v15-latin-regular.woff') format('woff'),
+        /* Modern Browsers */
+        url('fonts/vt323-v15-latin-regular.ttf') format('truetype'),
+        /* Safari, Android, iOS */
+        url('fonts/vt323-v15-latin-regular.svg#VT323') format('svg');
+    /* Legacy iOS */
+}
+
+.container {
+    transform-style: preserve-3d;
+    display: grid;
+    grid-gap: 10px;
+    grid-template-columns: [c] 100px [c] 200px [c] 200px [c] 200px [c] 200px [c];
+    /*repeat(5, [c] 200px);*/
+    grid-template-rows: [r] 100px [r] 500px [r] 150px [r];
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #2B2121;
+    border-radius: 0px 25px 25px 0px;
+    z-index: 1000;
+}
+
+/* .container::before {
+    content: '';
+    background-image: url(../static/images/pokeball.png);
+    background-size: contain;
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    z-index: -1;
+    margin-left: -244px;
+    margin-top: -10px;
+} */
+
+.box {
+    background-color: black;
+}
+
+.centered_div {
+    place-self: center;
+}
+
+.title {
+    grid-column: c 2 / span 4;
+    grid-row: r;
+}
+
+.pokemon_card {
+    background-color: white;
+    border-radius: 20px;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.pic {
+    grid-column: c 3 / span 2;
+    grid-row: r 2;
+}
+
+.progress {
+    grid-column: c;
+    grid-row: r / span 3;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr 2fr;
+    border-right: solid;
+}
+
+.progress_text {
+    grid-row: 1;
+}
+
+.ball {
+    width: 50px;
+}
+
+.ball1 {
+    grid-row: 2;
+}
+
+.ball2 {
+    grid-row: 3;
+}
+
+.ball3 {
+    grid-row: 4;
+}
+
+.ball4 {
+    grid-row: 5;
+}
+
+.ball5 {
+    grid-row: 6;
+}
+
+.ball6 {
+    grid-row: 7;
+}
+
+.ball7 {
+    grid-row: 8;
+}
+
+.ball8 {
+    grid-row: 9;
+}
+
+.ball9 {
+    grid-row: 10;
+}
+
+.ball10 {
+    grid-row: 11;
+}
+
+
+.choices {
+    grid-column: c 2 / span 4;
+    grid-row: r 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+}
+
+button {
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 10px;
+    width: 150px;
+}
+
+.b1 {
+    grid-column: 1;
+}
+
+.b2 {
+    grid-column: 2;
+}
+
+.b3 {
+    grid-column: 3;
+}
+
+.b4 {
+    grid-column: 4;
+}
+
+.next {
+    display: hidden;
+    grid-column: c 2 / span 4;
+    grid-row: r 3;
+}
+
+.nextPokemon {
+    background-color: white;
+    text-align: center;
+    border-radius: 25px;
+    padding: 15px;
+    display: none;
+}
+
+/* 
+.next {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 50px;
+}
+
+.sides {
+    flex-basis: 25%;
+} */

@@ -96,7 +96,7 @@ def populatePokeInfo():
         pokename = get_name(i).capitalize()
         spriteurl = get_sprite(i)
         bulbaurl = (
-            "https://the-pokemasters.herokuapp.com/static/pokemon/"
+            "https://the-pokemasters-v2.herokuapp.com/static/pokemon/"
             + get_image_name(pokename, i)
         )
         entry = pokeinfo(
@@ -272,7 +272,7 @@ def game():
     # later id will be current_user.id when flask login is implemented
     profile_for_game = profile.query.get(current_user.id)
     return render_template(
-        "game.html",
+        "gametest.html",
         username=profile_for_game.username,
         currentpoints=profile_for_game.currentpoints,
     )
@@ -455,30 +455,17 @@ def ranking():
 def leaderboard():
     user_list = profile.query.all()
     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
-    return render_template("ranking.html", user_ranking=user_ranking,)
-
-
-# def get_poke(id):
-#     pokelinfo = []
-#     array = get_collection(id)
-#     array_num = [int(i) for i in array]
-#     allpoke = get_poke_info_db()
-#     total = len(array_num)
-#     for i in range(total):
-#         name = allpoke[array_num[i]]["name"]
-#         imgurl = allpoke[array_num[i]]["bulbaimageurl"]
-#         cdict = {
-#             "name": name,
-#             "imageurl": imgurl,
-#         }
-#         pokelinfo.append(cdict)
-
+    return render_template(
+        "ranking.html",
+        user_ranking=user_ranking,
+    )
 
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
 def user_profile(user_id):
     if flask.request.method == "GET":
         # user info
         user_info = profile.query.filter_by(id=user_id).first()
+
         # pokemon info
         pokelinfo = []
         array = get_collection(user_id)

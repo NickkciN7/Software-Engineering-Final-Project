@@ -78,7 +78,10 @@ function answerSubmit(buttonNumber) {
         NUM_INCORRECT += 1;
     }
 
+    document.getElementById("choices").style.display = "none";
+    document.getElementById("next").style.display = "block";
     document.getElementById("nextPokemon").style.display = "block";
+
     if (GUESS_NUMBER === 10) {
         document.getElementById("nextPokeButton").style.display = "none";
         document.getElementById("resultsButton").style.display = "inline-block";
@@ -89,9 +92,9 @@ function answerSubmit(buttonNumber) {
 // at end do something else!!!
 function next() {
     document.getElementById("nextPokemon").style.display = "none";
-    document.getElementById("gameProg").innerText = GUESS_NUMBER + "/10";
-    document.getElementById("numCor").innerText = NUM_CORRECT;
-    document.getElementById("numIncor").innerText = NUM_INCORRECT;
+    // document.getElementById("gameProg").innerText = GUESS_NUMBER + "/10";
+    // document.getElementById("numCor").innerText = NUM_CORRECT;
+    // document.getElementById("numIncor").innerText = NUM_INCORRECT;
     updatePage();
     // allow clicking again
     CAN_CLICK = true;
