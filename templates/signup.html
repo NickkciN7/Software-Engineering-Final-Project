@@ -6,6 +6,13 @@
 </head>
 
 <body>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul id="flashes" class="flashes">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %} {% endwith %}
     <div class="container">
         <div class="header">
             <h1>Sign Up</h1>
@@ -19,6 +26,11 @@
         <form method="POST" action="/signup">
             <input type="text" name="user_name" placeholder="Enter username" /><br><br>
             <input type="text" name="password" placeholder="Enter password" /><br><br>
+            <label name="version">Choose a version</label>
+            <select name="version">
+                <option value="Blue">Blue</option>
+                <option value="Red">Red</option>
+            </select><br><br>
             <input type="submit" value="Sign Up" />
         </form>
     </div>
