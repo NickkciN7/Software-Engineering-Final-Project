@@ -1,5 +1,7 @@
 # pylint: disable = E1101, C0116, C0114, C0115, C0103, R0903, R1705
-
+import json
+from typing import Collection
+from flask import Flask, flash
 import os
 import random
 import flask
@@ -406,15 +408,21 @@ def purchasepokemon():
     pokemon_price = 10
     if flask.request.method == "POST":
         data = flask.request.json
+        poke_collection = get_collection(current_user.id)
+        poke_collection_num = [int(i) for i in poke_collection]
         current_user_profile = profile.query.get(current_user.id)
         if current_user_profile.currentpoints >= pokemon_price:
-            current_user_profile.collection += str(data["id"]) + ","
-            current_user_profile.currentpoints -= pokemon_price
-            db.session.commit()
-        elif current_user_profile.currentpoints < pokemon_price:
+            if data["id"] in poke_collection_num:
+                return jsonify ({"error": "already in collection"})
+            else:
+                current_user_profile.collection += str(data["id"]) + ","
+                current_user_profile.currentpoints -= pokemon_price
+                db.session.commit()
+                return jsonify({"success": "pokemon purchased"})
+        else:
+            current_user_profile.currentpoints < pokemon_price
             return jsonify({"error": "not enough points"})
-        elif current_user_profile.currentpoints < pokemon_price:
-            return jsonify({"sorry": "you already own"})
+       
 
     return jsonify(1)
 

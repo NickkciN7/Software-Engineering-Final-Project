@@ -28,18 +28,21 @@ function purchase(pokeid) {
 		},
 		body: JSON.stringify(dataToSend),
 	}).then(response => response.json()).then(data => {
-		console.log('Success:', data);
 		if (data.error == "not enough points") {
 			alert("You don't have enough points");
 			console.log("Not enough points");
 		}
-		else if (data.error == "you already own") {
-			alert("You own this item");
+		if (data.error == "already in collection") {
+			alert("You already own this pokemon");
 			console.log("You have own this pokemon");
 		}
-		else {
-			window.location.reload();
+		if (data.success == "pokemon purchased") {
+			alert("You have purchased this pokemon");
+			console.log("success");
+		
 		}
+		console.log("here");
+		window.location.reload();
 	});
 
 }
