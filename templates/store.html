@@ -1,9 +1,50 @@
-<html>
+<!DOCTYPE html>
+
 <head>
-	<link rel="stylesheet" href={{ url_for( 'static' , filename='store.css' ) }} />
+    <title>PokeMasters - Store</title>
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='store.css' ) }} />
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='clear.css' ) }} />
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
 </head>
 <body>
-	<div class="container">
+    <div id="nav">
+        <a href="/">Home</a>
+        <a href="/profile">| Profile</a>
+        <a href="/ranking">| Leaderboard</a>
+        <a href="/store">| <u>Store</u></a>
+        <a href="/logout">| Logout</a>
+    </div>
+	<div id="card">
+		<div id="logo">
+			<p>PokeMasters</p>
+		</div>
+		<div id="store">
+			<p>Store</p>
+		</div>
+		<div id="username">
+            <p>Username: {{ username }}</p>
+        </div>
+		<div id="currentpoints">
+			<p>Current points: {{currentpoints}}</p>
+		</div>
+		</div>
+		<div id="card2">
+			<div id="cardpoke">
+				<p class="pokep">Available Pokemon:</p>
+	{% for i in range(1,152) %}
+		<center><img src={{all_info[i].bulbaimageurl}} width="5%">
+			<p>Poki ID: {{i}}</p>
+			 <p>>Name: {{all_info[i].name}}</p>
+			 <p>Price: {{pokemon_price}}</p>
+			 <button type="button" id="{{i}}">Purchase</button><br/><br/>
+			 </center>
+		{% if i%5 == 0 %}
+	{% endif %}
+	{% endfor %}
+				 </div>
+</div>
+	<script src="/static/store.js" async></script> 
+	<!--- <div class="container">
 		<div id="points">
 			Username: {{username}}
 			<br>
@@ -32,7 +73,7 @@
 	{% if i%5 == 0 %}
 	{% endif %}
 	{% endfor %}
-	<script src="/static/store.js" async></script>
+	<script src="/static/store.js" async></script> --->
 </body>
 
 </html>

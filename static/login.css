@@ -43,7 +43,7 @@
     margin-left: 0px;
     margin-right: 0px;
     font-size: 25px;
-    margin-top: -30px;
+    margin-top: -40px;
     position: fixed;
 }
 
@@ -52,7 +52,7 @@
     margin-left: 0px;
     margin-right: 0px;
     font-size: 25px;
-    margin-top: 50px;
+    margin-top: 40px;
     position: fixed;
 }
 
@@ -84,7 +84,12 @@
 
 #submit {
     margin-top: 10px;
-    margin-left: 10px;
+    margin-left: -35px;
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 10px;
+    width: 150px;
 }
 
 #flashes {
@@ -114,6 +119,11 @@ a:visited {
 }
 
 a.nav {
+    text-decoration: none;
+    color: #2B2121;
+}
+
+a.nav:visited {
     text-decoration: none;
     color: #2B2121;
 }

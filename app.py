@@ -289,7 +289,7 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return flask.redirect("/login")
+    return flask.redirect("/")
 
 
 # start game related routes

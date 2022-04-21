@@ -1,48 +1,109 @@
-body {
-	background-color: #DFD4D4;;
-	/*width: 100%;*/
+#card {
+    width: 600px;
+    height: 200px;
+    border-radius: 25px 25px 0px 0px;
+    display: flex;
+    margin-left: 150px;
+	margin-top: -380px;
+    align-items: center;
+    background-color: #2B2121;
 }
 
-#Poki-Text {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	text-align: center;
-	/* margin-left: auto;
-	margin-right: auto;
-	align-items: center;
-	width: 15em; */
-
-
-	padding: 15px;
-	
-}
-.container {
-	background-color: #9acee0;
-	width: 94.3%;
-
+#card::before {
+    content: '';
+    background-image: url(pokemon/pokeball.png);
+    background-size: contain;
+    position: fixed;
+    width: 720px;
+    height: 720px;
+    z-index: -1;
+    margin-left: -310px;
+    margin-top: 400px;
 }
 
-#points {
-	font-size: 1.5em;
-	font-weight: bold;
-	text-align: center;
-	color: #000000;
+#logo {
+    display: block;
+    margin-left: 160px;
+    margin-right: auto;
+    font-size: 70px;
+    margin-top: -330px;
+    position: fixed;
+    height: 1px;
+    width: 1px;
 }
 
-.homediv {
-	position: fixed;
-	top: 5px;
-	right: 5px;
-	text-align: center;
-	/*center stuff inside*/
-	background-color: #8080ff;
-	padding: 20px;
-	border-radius: 25px;
-	/*rounded corners*/
+#store {
+    display: block;
+    margin-left: 260px;
+    margin-right: 0px;
+    font-size: 40px;
+    margin-top: 60px;
+    position: fixed;
+    width: 150px;
+    height: 200px;
 }
 
-.Purchase {
-	align-items: center;
-	text-align: center;
-	padding: 10px;
+#username {
+    display: block;
+    margin-left: 210px;
+    font-size: 25px;
+    margin-top: 60px;
+    position: fixed;
 }
 
+#currentpoints {
+    display: block;
+    margin-left: 200px;
+    font-size: 25px;
+    margin-top: 120px;
+    position: fixed;
+}
+
+#card2 {
+    width: 600px;
+    height: 400px;
+    border-radius: 0px 0px 25px 25px;
+    display: block;
+	margin-top: 200px;
+    margin-left: -600px;
+    align-items: center;
+    background-color: #2B2121;
+    overflow: auto;
+}
+
+#cardpoke {
+    margin-top: auto;
+    margin-left: auto;
+    font-size: 20px;
+    position: relative;
+}
+
+p.pokep {
+    margin-left: 225px;
+    margin-top: 20px;
+}
+
+button {
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 10px;
+    width: 150px;
+}
+
+#nav {
+    font-size: 20px;
+    margin-top: -600px;
+    margin-left: 340px;
+    position: absolute;
+}
+
+a {
+    text-decoration: none;
+    color: #2B2121;
+}
+
+a:visited {
+    text-decoration: none; 
+    color: #2B2121; 
+}
