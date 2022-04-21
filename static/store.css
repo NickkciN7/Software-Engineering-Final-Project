@@ -1,15 +1,31 @@
 body {
-	background-color: floralwhite;
+	background-color: #DFD4D4;;
 	/*width: 100%;*/
 }
 
-.points {
-	background-color: #9acee0;
-	flex-direction: column;
-	justify-content: center;
+#Poki-Text {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-align: center;
+	/* margin-left: auto;
+	margin-right: auto;
 	align-items: center;
-	width: 20%;
-	padding: 10px;
+	width: 15em; */
+
+
+	padding: 15px;
+	
+}
+.container {
+	background-color: #9acee0;
+	width: 94.3%;
+
+}
+
+#points {
+	font-size: 1.5em;
+	font-weight: bold;
+	text-align: center;
+	color: #000000;
 }
 
 .homediv {
@@ -23,3 +39,10 @@ body {
 	border-radius: 25px;
 	/*rounded corners*/
 }
+
+.Purchase {
+	align-items: center;
+	text-align: center;
+	padding: 10px;
+}
+

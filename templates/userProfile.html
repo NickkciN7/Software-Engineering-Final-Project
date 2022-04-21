@@ -15,8 +15,13 @@
     <h3>Lifetime points: {{user_info.lifetimepoints}}</h3>
     <h3>My Pokemon Collection:</h3>
 
-    <div id="myData" />
-    <script type="text/javascript" src="/static/profile.js"></script>
+    {% for data in pokelinfo %}
+    <h4>{{data.name}}</h4>
+    <img src="{{data.imageurl}}" width="150" , height="150">
+    {% endfor %}
+
+    <!-- <div id="userData" /> -->
+    <script type="text/javascript" src=""></script>
 </body>
 
 </html>

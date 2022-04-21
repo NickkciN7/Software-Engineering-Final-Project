@@ -1,5 +1,6 @@
 # pylint: disable=C0114,C0115,C0116,C0301
 
+from urllib import response
 import requests
 
 BASE_URL = "https://pokeapi.co/api/v2/"
@@ -7,6 +8,15 @@ BASE_URL = "https://pokeapi.co/api/v2/"
 
 # BASE_URL_WIKI = "https://en.wikipedia.org/w/api.php"
 BASE_URL_BULBA = "https://bulbapedia.bulbagarden.net/w/api.php"
+
+def get_color(pokeid):
+
+    poke_color_url = BASE_URL + "pokemon-color/" + str(pokeid)
+    response = requests.get(poke_color_url)
+    data = response.json()
+
+    return data["name"]
+    
 
 
 def get_name(pokeid):

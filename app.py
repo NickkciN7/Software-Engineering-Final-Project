@@ -1,5 +1,7 @@
 # pylint: disable = E1101, C0116, C0114, C0115, C0103, R0903, R1705
-
+import json
+from typing import Collection
+from flask import Flask, flash
 import os
 import random
 import flask
@@ -77,6 +79,11 @@ class pokeinfo(db.Model):
     pokeapiimageurl = db.Column(db.String(500))
 
 
+class version(db.Model):
+    userid = db.Column(db.Integer, primary_key=True)
+    version = db.Column(db.String(10))
+
+
 db.create_all()
 
 # start database related functions
@@ -89,7 +96,7 @@ def populatePokeInfo():
         pokename = get_name(i).capitalize()
         spriteurl = get_sprite(i)
         bulbaurl = (
-            "https://the-pokemasters.herokuapp.com/static/pokemon/"
+            "https://the-pokemasters-v2.herokuapp.com/static/pokemon/"
             + get_image_name(pokename, i)
         )
         entry = pokeinfo(
@@ -150,8 +157,32 @@ def get_collection(userid):
     return collection_list
 
 
+
+
+
 # end database related functions
 
+def get_blue_version():
+    blue_version = [
+        1,2,3,4,5,6,7,8,9,10,11,12,13,15,17,20,21,
+        22,25,26,27,29,30,31,32,33,34,41,42,44,45,
+        47,48,49,51,52,53,54,55,56,57,65,69,70,71,
+        74,75,76,77,80,85,86,88,89,90,91,95,97,98,
+        100,101,111,112,115,116,117,120,121,122,124,
+        125,126,127,128,129,134,135,136,143,144,145,
+        146,149,150
+        ]
+    return blue_version
+def get_red_version():
+    red_version = [
+        14,16,18,19,23,24,28,35,36,37,38,39,40,43,
+        46,50,58,59,60,61,62,63,64,66,67,68,72,73,
+        78,79,81,82,83,84,87,92,93,94,96,99,102,103,
+        104,105,106,107,108,109,110,113,114,118,119,
+        123,130,131,132,133,137,138,139,140,141,142,
+        147,148
+        ] 
+    return red_version
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -175,6 +206,7 @@ def index():
 def signup():
     if flask.request.method == "POST":
         user_name = flask.request.form["user_name"]
+        user_version = flask.request.form["version"]
         password = get_hashed_password(flask.request.form["password"])
 
         if (len(user_name) == 0) or (len(password) == 0):
@@ -195,6 +227,13 @@ def signup():
                 collection="",
             )
             db.session.add(user)
+            db.session.commit()
+            db.session.refresh(user)
+            user_version_data = version(
+                userid=user.id,
+                version=user_version,
+            )
+            db.session.add(user_version_data)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
             return flask.redirect("/login")
@@ -259,14 +298,8 @@ def logout():
 @app.route("/game")
 @login_required
 def game():
-    # will use profile with id 3 always for now
-    # later id will be current_user.id when flask login is implemented
     profile_for_game = profile.query.get(current_user.id)
-    return render_template(
-        "game.html",
-        username=profile_for_game.username,
-        currentpoints=profile_for_game.currentpoints,
-    )
+    return render_template("game.html", currentpoints=profile_for_game.currentpoints)
 
 
 @app.route("/gamedata")
@@ -385,6 +418,7 @@ def shopping():
     """
     Displays the store page
     """
+ 
     pokemon_price = 10
     user_info = profile.query.get(current_user.id)
     all_info = get_poke_info_db()
@@ -398,6 +432,7 @@ def shopping():
         username=user_info.username,
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
+        
     )
 
 
@@ -409,31 +444,74 @@ def purchasepokemon():
     pokemon_price = 10
     if flask.request.method == "POST":
         data = flask.request.json
+        poke_collection = get_collection(current_user.id)
+        poke_collection_num = [int(i) for i in poke_collection]
         current_user_profile = profile.query.get(current_user.id)
         if current_user_profile.currentpoints >= pokemon_price:
-            current_user_profile.collection += str(data["id"]) + ","
-            current_user_profile.currentpoints -= pokemon_price
-            db.session.commit()
-        elif current_user_profile.currentpoints < pokemon_price:
+            if data["id"] in poke_collection_num:
+                return jsonify({"error": "already in collection"})
+            else:
+                current_user_profile.collection += str(data["id"]) + ","
+                current_user_profile.currentpoints -= pokemon_price
+                db.session.commit()
+                return jsonify({"success": "pokemon purchased"})
+        else:
+            current_user_profile.currentpoints < pokemon_price
             return jsonify({"error": "not enough points"})
-        elif current_user_profile.currentpoints < pokemon_price:
-            return jsonify({"sorry": "you already own"})
 
     return jsonify(1)
 
 
 @app.route("/ranking", methods=["GET", "POST"])
+@login_required
 def ranking():
+    if flask.request.method == "POST":
+        user_list = profile.query.all()
+        user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints)
+        user_ranking_text = [
+            {"username": n.username, "lifetimepoints": n.lifetimepoints, "id": n.id}
+            for n in user_ranking
+        ]
+        return flask.jsonify({"user_list": user_ranking_text})
+    return render_template("ranking.html")
+
+
+@app.route("/leaderboard", methods=["GET", "POST"])
+@login_required
+def leaderboard():
     user_list = profile.query.all()
     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
-    return render_template("ranking.html", user_ranking=user_ranking,)
+    return render_template(
+        "ranking.html",
+        user_ranking=user_ranking,
+    )
 
 
 @app.route("/user_profile/<user_id>", methods=["GET", "POST"])
 def user_profile(user_id):
     if flask.request.method == "GET":
+        # user info
         user_info = profile.query.filter_by(id=user_id).first()
-        return render_template("userProfile.html", user_info=user_info,)
+
+        # pokemon info
+        pokelinfo = []
+        array = get_collection(user_id)
+        array_num = [int(i) for i in array]
+        allpoke = get_poke_info_db()
+        total = len(array_num)
+        for i in range(total):
+            name = allpoke[array_num[i]]["name"]
+            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+            cdict = {
+                "name": name,
+                "imageurl": imgurl,
+            }
+            pokelinfo.append(cdict)
+        return render_template(
+            "userProfile.html",
+            user_info=user_info,
+            pokelinfo=pokelinfo,
+        )
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -443,8 +521,25 @@ def search():
     else:
         search_name = flask.request.form["search_name"]
         found_user = profile.query.filter_by(username=search_name).first()
+        pokelinfo = []
+        array = get_collection(found_user.id)
+        array_num = [int(i) for i in array]
+        allpoke = get_poke_info_db()
+        total = len(array_num)
+        for i in range(total):
+            name = allpoke[array_num[i]]["name"]
+            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+            cdict = {
+                "name": name,
+                "imageurl": imgurl,
+            }
+            pokelinfo.append(cdict)
         if found_user:
-            return render_template("userProfile.html", user_info=found_user,)
+            return render_template(
+                "userProfile.html",
+                user_info=found_user,
+                pokelinfo=pokelinfo,
+            )
         else:
             flask.flash("No user found")
             return flask.redirect("/ranking")
