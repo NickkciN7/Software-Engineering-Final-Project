@@ -196,9 +196,10 @@ def unauthorized_callback():
 
 
 @app.route("/")
-@login_required
 def index():
-    return render_template("home.html")
+    if current_user.is_authenticated:
+        return flask.redirect(flask.url_for("game"))
+    return render_template("landing.html")
 
 
 @app.route("/signup", methods=["GET", "POST"])
@@ -209,12 +210,12 @@ def signup():
         password = get_hashed_password(flask.request.form["password"])
 
         if (len(user_name) == 0) or (len(password) == 0):
-            flask.flash("username or password cannot be empty!")
+            flask.flash("Username or password cannot be empty!")
             return flask.redirect("/signup")
 
         found_user = profile.query.filter_by(username=user_name).first()
         if found_user:
-            flask.flash(f"User Name {user_name} already exists!")
+            flask.flash(f"Username {user_name} already exists!")
             return flask.redirect("/signup")
         else:
             user = profile(
@@ -268,6 +269,8 @@ def upload():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    if current_user.is_authenticated:
+        return flask.redirect(flask.url_for("game"))
     if flask.request.method == "GET":
         return flask.render_template("login.html")
     else:
@@ -278,8 +281,8 @@ def login():
         if found_user:
             if verify_password(password, found_user.password):
                 login_user(found_user)
-                return flask.redirect("/")
-        flask.flash("Incorrect password or username")
+                return flask.redirect("/game")
+        flask.flash("Incorrect username or password")
         return flask.redirect("/login")
 
 

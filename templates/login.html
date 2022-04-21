@@ -1,33 +1,42 @@
 <html>
 
 <head>
-    <title>LogInPage</title>
-    <link rel="stylesheet" href={{ url_for( 'static' , filename='style.css' ) }} />
+    <title>PokeMasters - Login</title>
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='login.css' ) }} />
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='clear.css' ) }} />
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
-    {% with messages = get_flashed_messages() %} {% if messages %}
-    <ul id="flashes" class="flashes">
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-    </ul>
-    {% endif %} {% endwith %}
-    <div class="container">
-        <div class="header">
-            <h1>Log in</h1>
-        </div>
-        <div class="link">
-            <a href={{ url_for ('signup')}}> Sign Up </a>&nbsp&nbsp&nbsp&nbsp&nbsp
-            <a href={{ url_for ('game')}}> Home </a>
-        </div>
+    <div id="nav">
+        <a class="nav" href="/">Home</a>
     </div>
-    <div class="center">
-        <form method="POST" action="/login">
-            <input type="text" name="user_name" placeholder="Enter username" /><br><br>
-            <input type="text" name="password" placeholder="Enter password" /><br><br>
-            <input type="submit" value="Submit" />
-        </form>
+    <div id="card">
+        <div id="logo">
+            <p>PokeMasters</p>
+            <div id="login">
+                <p>Login</p>
+                {% with messages = get_flashed_messages() %} {% if messages %}
+                    <ul id="flashes" class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                    </ul>
+                {% endif %} {% endwith %}
+                <div id="username">
+                <p>Username</p>
+                 <form method="POST" action="/login">
+                <input id="usr" type="text" name="user_name" placeholder="Enter username" />
+                </div>
+                <div id="password">
+                <p>Password</p>
+                <input id="pwd" type="password" name="password" placeholder="Enter password" /><br />
+                <input id="submit" type="submit" value="Submit" />
+                </form>
+                </div>
+                </div>
+                </div>
+        <a href={{ url_for ('signup')}}>Not registered? Sign up here</a>
     </div>
 </body>
 
