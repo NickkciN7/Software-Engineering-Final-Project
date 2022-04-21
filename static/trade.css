@@ -48,10 +48,10 @@ body {
     grid-row: 1;
     display: grid;
     width: 900px;
-    grid-template-columns: 900px;
+    grid-template-columns: [c] 450px [c] 450px [c];
     /*repeat(5, [c] 200px);*/
-    height: fit-content;
-    grid-template-rows: [r] 75px [r] 75px [r] 600px [r];
+    height: 750px;
+    grid-template-rows: [r] 75px [r] 40px [r] 55px [r] 40px [r] 2px [r] 35px [r] 503px [r];
     background-color: #2B2121;
     border-radius: 25px 25px 25px 25px;
     /* z-index: 1; */
@@ -71,15 +71,60 @@ body {
 }
 
 .title {
-    grid-column: 1;
-    grid-row: r;
+    grid-column: c 1 / span 2;
+    grid-row: r 1;
 }
 
-.selection {
-    grid-column: 1;
+.request {
+    grid-column: c 1;
     grid-row: r 2;
 }
 
+.offer {
+    grid-column: c 2;
+    grid-row: r 2;
+}
+
+.poke1 {
+    grid-column: c 1;
+    grid-row: r 3;
+}
+
+.poke2 {
+    grid-column: c 2;
+    grid-row: r 3;
+}
+
+.make_request_button {
+    grid-column: c 1 / span 2;
+    grid-row: 4;
+}
+
+/* to make border because border shrunk to match size of button if same div */
+.border {
+    grid-column: c 1 / span 2;
+    grid-row: 5;
+    border-bottom: solid;
+}
+
+.trade_requests_title {
+    grid-column: c 1 / span 2;
+    grid-row: 6;
+}
+
+/* .make_request_button {
+    grid-column: 1;
+    grid-row: 1;
+    border-bottom: solid;
+} */
+
+.make_request_button_grid {
+    grid-column: c 1 / span 2;
+    grid-row: r 4;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+}
 
 button {
     font-family: "VT323";
@@ -94,5 +139,9 @@ select {
     background-color: white;
     color: #4c3b3b;
     border-radius: 10px;
+    width: 150px;
+}
+
+.select_div {
     width: 150px;
 }

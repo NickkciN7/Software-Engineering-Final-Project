@@ -12,14 +12,32 @@
                 <div class="title centered_div" id="title">
                     <h1>Make A Trade</h1>
                 </div>
-                <div class="selection centered_div" id="selection">
-                    Request <select></select> Offer: <select></select> <button>Start Request</button>
+                <div class="request centered_div">
+                    Request <select id="request" onchange="selectionChanged(1)">
+                        <option value="none">--Select--</option>
+                    </select>
                 </div>
+                <div class="poke1 centered_div">
+                    <img id="poke1" src="../static/images/pokeball.png" alt="poke" style="width: 50px;">
+                </div>
+                <div class="offer centered_div">
+                    Offer <select id="offer" onchange="selectionChanged(2)">
+                        <option value="none">--Select--</option>
+                    </select>
+                </div>
+                <div class="poke2 centered_div">
+                    <img id="poke2" src="../static/images/pokeball.png" alt="poke" style="width: 50px;">
+                </div>
+                <div class="make_request_button centered_div">
+                    <button>Make Request</button>
+                </div>
+                <div class="border"></div>
+                <div class="trade_requests_title centered_div">Current Trade Requests</div>
             </div>
         </div>
     </div>
 
-    <!-- <script type="text/javascript" src="/static/game.js"></script> -->
+    <script type="text/javascript" src="/static/trade.js"></script>
 </body>
 
 </html>

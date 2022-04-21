@@ -686,6 +686,13 @@ def trade():
     return flask.render_template("trade.html")
 
 
+@app.route("/tradegetinfo")
+@login_required
+def tradegetinfo():
+    all_info = get_poke_info_db()
+    return flask.jsonify(all_info)
+
+
 app.run(
     host=os.getenv("IP", "0.0.0.0"), port=int(os.getenv("PORT", "8080")), debug=True
 )
