@@ -23,13 +23,21 @@
             <p>Upload</p>
         </div>
         <div id="uploadbutton">
-        <form method="POST" action="/upload" enctype="multipart/form-data">
-        <input id="file" type="file" name="file"><br><br>
+            <form method="POST" action="/upload" enctype="multipart/form-data">
+                <input id="file" type="file" name="file"><br><br>
         </div>
         <div>
-        <input id="submit" type="submit" value="Upload" />
+            <input id="submit" type="submit" value="Upload" />
         </div>
-    </form>
+        </form>
+        {% with messages = get_flashed_messages() %} {% if messages %}
+        <ul id="flashes" class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %} {% endwith %}
+    </div>
 </body>
 
 </html>
