@@ -1,0 +1,119 @@
+#card {
+    width: 600px;
+    height: 400px;
+    border-radius: 25px 25px 25px 25px;
+    display: flex;
+    margin-left: 200px;
+    align-items: center;
+    background-color: #2B2121;
+}
+
+#card::before {
+    content: '';
+    background-image: url(pokemon/pokeball.png);
+    background-size: contain;
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    z-index: -1;
+    margin-left: -210px;
+    margin-top: -10px;
+}
+
+#logo {
+    display: block;
+    margin-left: 150px;
+    margin-right: auto;
+    font-size: 70px;
+    margin-top: -300px;
+    position: fixed;
+}
+
+#login {
+    display: block;
+    margin-left: 100px;
+    margin-right: 0px;
+    font-size: 40px;
+    margin-top: -120px;
+    position: fixed;
+}
+
+#username {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 25px;
+    margin-top: -30px;
+    position: fixed;
+}
+
+#password {
+    display: block;
+    margin-left: 0px;
+    margin-right: 0px;
+    font-size: 25px;
+    margin-top: 50px;
+    position: fixed;
+}
+
+#usr {
+    margin-top: -20px;
+    margin-left: -60px;
+    margin-bottom: 4px;
+    width: 200px;
+    height: 28px;
+    color: white;
+    text-align: center;
+    font-family: 'VT323';
+    background: #000000;
+    border: 1px solid #878787;
+}
+
+#pwd {
+    margin-top: -20px;
+    margin-left: -60px;
+    margin-bottom: 4px;
+    width: 200px;
+    height: 28px;
+    color: white;
+    text-align: center;
+    font-family: 'VT323';
+    background: #000000;
+    border: 1px solid #878787;
+}
+
+#submit {
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+#flashes {
+    font-size: 20px;
+    margin-left: -110px;
+    margin-top: -20px;
+    color: red;
+}
+
+a {
+    text-decoration: none; 
+    color: white; 
+    margin-left: 200px;
+    margin-top: 300px;
+}
+
+a:visited {
+    text-decoration: none; 
+    color: white; 
+}
+
+#nav {
+    font-size: 20px;
+    margin-top: -420px;
+    margin-left: 520px;
+    position: absolute;
+}
+
+a.nav {
+    text-decoration: none;
+    color: #2B2121;
+}

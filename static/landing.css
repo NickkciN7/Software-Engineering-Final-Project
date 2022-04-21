@@ -1,0 +1,53 @@
+#card {
+    width: 600px;
+    height: 400px;
+    border-radius: 25px 25px 25px 25px;
+    display: flex;
+    margin-left: 200px;
+    align-items: center;
+    background-color: #2B2121;
+}
+
+#card::before {
+    content: '';
+    background-image: url(pokemon/pokeball.png);
+    background-size: contain;
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    z-index: -1;
+    margin-left: -210px;
+    margin-top: -10px;
+}
+
+#logo {
+    display: block;
+    margin-left: 150px;
+    margin-right: auto;
+    font-size: 70px;
+    margin-top: -300px;
+    position: fixed;
+}
+
+#landing {
+    display: flex;
+    margin-left: 60px;
+    margin-right: 0px;
+    font-size: 20px;
+    margin-top: -20px;
+    position: fixed;
+    width: 500px;
+    height: 200px;
+}
+
+#nav {
+    font-size: 20px;
+    margin-top: -420px;
+    margin-left: 660px;
+    position: absolute;
+}
+
+a {
+    text-decoration: none;
+    color: #2B2121;
+}
