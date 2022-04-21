@@ -11,15 +11,13 @@ function listSorted(data) {
     for (var i = 0; i < data.length; i++) {
         var listItem = document.createElement('li');
         var userList = document.createElement('a')
-        userList.textContent = data[i].username.padEnd(100, '.');
+        userList.textContent = data[i].username;
         userList.href = "/user_profile/" + data[i].id
         var userPoints = document.createTextNode(data[i].lifetimepoints + ' points');
-        // userPoints.className = "right";
         var div = document.createElement("div");
         div.appendChild(userList);
-        div.appendChild(userPoints);
         listItem.appendChild(div);
-        // listItem.appendChild(userList);
+        listItem.appendChild(userPoints);
         listView.appendChild(listItem);
     }
     display_list.appendChild(listView);
@@ -43,18 +41,4 @@ function sortDesc() {
         .then(data => listSorted(data.user_list.reverse()));
 }
 
-function appendData(data) {
-    var mainContainer = document.getElementById("userData");
-    var i = 0;
-    var div = null;
-    var image = null;
-    for (i = 0; i < data.length; i++) {
-        div = document.createElement("div");
-        img = new Image();
-        img.src = data[i].imageurl;
-        div.innerHTML = "Name: " + data[i].name;
-        mainContainer.appendChild(div);
-        mainContainer.appendChild(img);
-    }
-}
 
