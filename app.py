@@ -393,13 +393,13 @@ def upload():
     if flask.request.method == "POST":
         if "file" not in flask.request.files:
             flask.flash("No file part")
-            return flask.redirect("/signup")
+            return flask.redirect("/upload")
         file = flask.request.files["file"]
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == "":
             flask.flash("No selected file")
-            return flask.redirect("/signup")
+            return flask.redirect("/upload")
         if file:
             filename = secure_filename(file.filename)
             path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
@@ -407,8 +407,8 @@ def upload():
             curr_user = profile.query.filter_by(id=current_user.id).first()
             curr_user.pic_path = path
             db.session.commit()
-            flask.flash("Picture updated!")
-            return flask.redirect("/upload")
+            # flask.flash("Picture updated!")
+            return flask.redirect("/profile")
     return flask.render_template("upload.html")
 
 
