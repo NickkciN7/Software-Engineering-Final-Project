@@ -84,6 +84,13 @@ class version(db.Model):
     version = db.Column(db.String(10))
 
 
+class trade(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    userid = db.Column(db.Integer)
+    requestid = db.Column(db.Integer)
+    offerid = db.Column(db.Integer)
+
+
 db.create_all()
 
 # start database related functions
@@ -694,7 +701,16 @@ def trade():
 @login_required
 def tradegetinfo():
     all_info = get_poke_info_db()
-    return flask.jsonify(all_info)
+    user_collection = get_collection(current_user.id)
+    return flask.jsonify({"info": all_info, "collection": user_collection})
+
+
+@app.route("/maketraderequest")
+@login_required
+def maketraderequest():
+    all_info = get_poke_info_db()
+    user_collection = get_collection(current_user.id)
+    return flask.jsonify({"info": all_info, "collection": user_collection})
 
 
 app.run(
