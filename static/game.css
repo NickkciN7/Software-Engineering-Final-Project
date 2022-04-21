@@ -1,28 +1,3 @@
-body {
-    background-color: #DFD4D4;
-    font-family: "VT323";
-    color: white;
-}
-
-@font-face {
-    font-family: 'VT323';
-    font-style: normal;
-    font-weight: 400;
-    /* Exact URLs below for the fonts. Figured compability for most browsers since it was included in the font download. */
-    src: url('fonts/vt323-v15-latin-regular.eot');
-    /* IE9 Compat Modes */
-    src: local(''), url('fonts/vt323-v15-latin-regular.eot?#iefix') format('embedded-opentype'),
-        /* IE6-IE8 */
-        url('fonts/vt323-v15-latin-regular.woff2') format('woff2'),
-        /* Super Modern Browsers */
-        url('fonts/vt323-v15-latin-regular.woff') format('woff'),
-        /* Modern Browsers */
-        url('fonts/vt323-v15-latin-regular.ttf') format('truetype'),
-        /* Safari, Android, iOS */
-        url('fonts/vt323-v15-latin-regular.svg#VT323') format('svg');
-    /* Legacy iOS */
-}
-
 /*makes div size of page with 1 cell*/
 .page {
     display: grid;
@@ -209,6 +184,22 @@ button {
     display: none;
 }
 
+#nav {
+    font-size: 20px;
+    margin-top: -770px;
+    margin-left: 330px;
+    position: absolute;
+}
+
+a {
+    text-decoration: none;
+    color: #2B2121;
+}
+
+a:visited {
+    text-decoration: none; 
+    color: #2B2121; 
+}
 /* 
 .next {
     display: flex;

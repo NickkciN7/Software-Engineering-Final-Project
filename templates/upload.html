@@ -1,42 +1,35 @@
-<html>
+<!DOCTYPE html>
 
 <head>
-    <title>UploadPage</title>
-    <style>
-        body {
-            background-color: #c1e1ec;
-            text-align: center;
-        }
-
-        .homediv {
-            position: fixed;
-            top: 5px;
-            right: 5px;
-            text-align: center;
-            /*center stuff inside*/
-            background-color: #8080ff;
-            padding: 20px;
-            border-radius: 25px;
-            /*rounded corners*/
-        }
-    </style>
+    <title>PokeMasters - Upload</title>
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='upload.css' ) }} />
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='clear.css' ) }} />
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
-    <h1>Upload</h1>
-    <form method="POST" action="/upload" enctype="multipart/form-data">
-        <input type="file" name="file"><br><br>
-        <input type="submit" value="Upload" />
-    </form>
-    <hr>
-    <a href="/profile">
-        <button>BACK TO PROFILE</button>
-    </a>
-    <div class="homediv">
-        <a href="/">
-            <button>HOME</button>
-        </a>
+    <div id="nav">
+        <a href="/">Home</a>
+        <a href="/profile">| <u>Profile</u></a>
+        <a href="/ranking">| Leaderboard</a>
+        <a href="/store">| Store</a>
+        <a href="/logout">| Logout</a>
     </div>
+    <div id="card">
+        <div id="logo">
+            <p>PokeMasters</p>
+        </div>
+        <div id="upload">
+            <p>Upload</p>
+        </div>
+        <div id="uploadbutton">
+        <form method="POST" action="/upload" enctype="multipart/form-data">
+        <input id="file" type="file" name="file"><br><br>
+        </div>
+        <div>
+        <input id="submit" type="submit" value="Upload" />
+        </div>
+    </form>
 </body>
 
 </html>

@@ -1,0 +1,90 @@
+#card {
+    width: 600px;
+    height: 250px;
+    border-radius: 25px 25px 25px 25px;
+    display: flex;
+    margin-left: 200px;
+    align-items: center;
+    background-color: #2B2121;
+}
+
+#card::before {
+    content: '';
+    background-image: url(pokemon/pokeball.png);
+    background-size: contain;
+    position: fixed;
+    width: 400px;
+    height: 400px;
+    z-index: -1;
+    margin-left: -170px;
+    margin-top: -10px;
+}
+
+#logo {
+    display: block;
+    margin-left: 150px;
+    margin-right: auto;
+    font-size: 70px;
+    margin-top: -370px;
+    position: fixed;
+    height: 10px;
+}
+
+#upload {
+    display: block;
+    margin-left: 250px;
+    margin-right: 0px;
+    font-size: 40px;
+    margin-top: -190px;
+    position: fixed;
+    width: 1px;
+    height: 1px;
+}
+
+#file {
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 10px;
+    width: 150px;
+}
+
+#submit {
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 10px;
+    width: 150px;
+    margin-left: -150px;
+    margin-top: 120px;
+}
+
+#uploadbutton {
+    margin-left: 220px;
+    margin-top: 60px;
+}
+
+button {
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 10px;
+    width: 150px;
+}
+
+#nav {
+    font-size: 20px;
+    margin-top: -270px;
+    margin-left: 400px;
+    position: absolute;
+}
+
+a {
+    text-decoration: none;
+    color: #2B2121;
+}
+
+a:visited {
+    text-decoration: none; 
+    color: #2B2121; 
+}

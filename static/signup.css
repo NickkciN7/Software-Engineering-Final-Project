@@ -84,7 +84,12 @@
 
 #submit {
     margin-top: 10px;
-    margin-left: 82px;
+    margin-left: 35px;
+    font-family: "VT323";
+    background-color: white;
+    color: #4c3b3b;
+    border-radius: 10px;
+    width: 150px;
 }
 
 #flashes {
@@ -116,6 +121,11 @@ a:visited {
 a.nav {
     text-decoration: none;
     color: #2B2121;
+}
+
+a.nav:visited {
+    text-decoration: none; 
+    color: #2B2121; 
 }
 
 #version {
