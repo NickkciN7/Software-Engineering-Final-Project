@@ -145,3 +145,12 @@ select {
 .select_div {
     width: 150px;
 }
+
+
+.trades {
+    grid-column: c 1 / span 2;
+    grid-row: r 7;
+    overflow: scroll;
+    display: flex;
+    justify-content: center;
+}
