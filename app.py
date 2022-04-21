@@ -157,8 +157,32 @@ def get_collection(userid):
     return collection_list
 
 
+
+
+
 # end database related functions
 
+def get_blue_version():
+    blue_version = [
+        1,2,3,4,5,6,7,8,9,10,11,12,13,15,17,20,21,
+        22,25,26,27,29,30,31,32,33,34,41,42,44,45,
+        47,48,49,51,52,53,54,55,56,57,65,69,70,71,
+        74,75,76,77,80,85,86,88,89,90,91,95,97,98,
+        100,101,111,112,115,116,117,120,121,122,124,
+        125,126,127,128,129,134,135,136,143,144,145,
+        146,149,150
+        ]
+    return blue_version
+def get_red_version():
+    red_version = [
+        14,16,18,19,23,24,28,35,36,37,38,39,40,43,
+        46,50,58,59,60,61,62,63,64,66,67,68,72,73,
+        78,79,81,82,83,84,87,92,93,94,96,99,102,103,
+        104,105,106,107,108,109,110,113,114,118,119,
+        123,130,131,132,133,137,138,139,140,141,142,
+        147,148
+        ] 
+    return red_version
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -394,6 +418,7 @@ def shopping():
     """
     Displays the store page
     """
+ 
     pokemon_price = 10
     user_info = profile.query.get(current_user.id)
     all_info = get_poke_info_db()
@@ -407,6 +432,7 @@ def shopping():
         username=user_info.username,
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
+        
     )
 
 
