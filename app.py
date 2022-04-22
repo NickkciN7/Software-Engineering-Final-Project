@@ -1,7 +1,5 @@
 # pylint: disable = E1101, C0116, C0114, C0115, C0103, R0903, R1705
-import json
-from typing import Collection
-from flask import Flask, flash
+
 import os
 import random
 import flask
@@ -691,10 +689,33 @@ def search():
     # return flask.redirect("/userProfile.html")
 
 
-@app.route("/trade", methods=["GET", "POST"])
+@app.route("/trading", methods=["GET", "POST"])
 @login_required
-def trade():
-    return flask.render_template("trade.html")
+def trading():
+    trade_query = trade.query.filter(trade.userid != current_user.id)
+    trade_list = []
+    all_info = get_poke_info_db()
+    for t in trade_query:
+        username = profile.query.get(t.userid).username
+        poke_request = {
+            "name": all_info[t.requestid]["name"],
+            "image": all_info[t.requestid]["pokeapiimageurl"],
+        }
+        poke_offer = {
+            "name": all_info[t.offerid]["name"],
+            "image": all_info[t.offerid]["pokeapiimageurl"],
+        }
+        trade_list.append(
+            {
+                "id": t.id,
+                "username": username,
+                "poke_request": poke_request,
+                "poke_offer": poke_offer,
+            }
+        )
+    return flask.render_template(
+        "trade.html", trade_list=trade_list, length=len(trade_list)
+    )
 
 
 @app.route("/tradegetinfo")
@@ -711,6 +732,85 @@ def maketraderequest():
     all_info = get_poke_info_db()
     user_collection = get_collection(current_user.id)
     return flask.jsonify({"info": all_info, "collection": user_collection})
+
+
+@app.route("/maketradeentry", methods=["GET", "POST"])
+@login_required
+def maketradeentry():
+    if flask.request.method == "POST":
+        data = flask.request.json
+        requestID = data["requestID"]
+        offerID = data["offerID"]
+        newTrade = trade(
+            userid=current_user.id,
+            requestid=requestID,
+            offerid=offerID,
+        )
+        db.session.add(newTrade)
+        db.session.commit()
+    return flask.jsonify(1)
+
+
+@app.route("/maketrade", methods=["GET", "POST"])
+@login_required
+def maketrade():
+    currUserPdidEvolve = False
+    if flask.request.method == "POST":
+        data = flask.request.json
+        tradeID = data["tradeID"]
+        trade_entry = trade.query.get(tradeID)
+        rID = trade_entry.requestid
+        oID = trade_entry.offerid
+
+        currUserCollection = get_collection(current_user.id)
+        requestPosterCollection = get_collection(trade_entry.userid)
+
+        # print(currUserCollection)
+        # print(requestPosterCollection)
+        # print(trade_entry.requestid)
+        # print(trade_entry.offerid)
+
+        evolve = [64, 67, 75, 93]
+
+        if trade_entry.requestid in evolve:
+            rID += 1
+        if trade_entry.offerid in evolve:
+            oID += 1
+            currUserPdidEvolve = True
+
+        currUserCollection.remove(str(trade_entry.requestid))
+        currUserCollection.append(str(oID))
+
+        requestPosterCollection.remove(str(trade_entry.offerid))
+        requestPosterCollection.append(str(rID))
+        currUserString = ",".join(currUserCollection) + ","
+        postUserString = ",".join(requestPosterCollection) + ","
+
+        currUserProf = profile.query.get(current_user.id)
+        currUserProf.collection = currUserString
+
+        postUserProf = profile.query.get(trade_entry.userid)
+        postUserProf.collection = postUserString
+
+        db.session.delete(trade_entry)
+        db.session.commit()
+        # print(currUserString)
+        # print(postUserString)
+        # print(currUserCollection)
+        # print(requestPosterCollection)
+    if currUserPdidEvolve:
+        return flask.jsonify("evolve")
+    else:
+        return flask.jsonify("did not evolve")
+
+
+@app.route("/getrequestid", methods=["GET", "POST"])
+@login_required
+def getrequestid():
+    tradeID = flask.request.args.get("id")
+    print(tradeID)
+    trade_entry = trade.query.get(tradeID)
+    return flask.jsonify(trade_entry.requestid)
 
 
 app.run(

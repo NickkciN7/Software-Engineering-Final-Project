@@ -2,15 +2,28 @@
 <html>
 
 <head>
+    <title>PokeMasters - Trade</title>
     <link rel="stylesheet" href={{ url_for( 'static' , filename='trade.css' ) }} />
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
+    <div id="nav">
+        <a href="/">Game</a>
+        <a href="/profile">| Profile</a>
+        <a href="/leaderboard">| Leaderboard</a>
+        <a href="/store">| Store</a>
+        <a href="#">| <u>Trade</u></a>
+        <a href="/logout">| Logout</a>
+    </div>
     <div class="page">
         <div class="pageSingleCell centered_div">
             <div class="container">
                 <div class="title centered_div" id="title">
-                    <h1>PokeMasters</h1>
+                    <div style="text-align: center;">
+                        <span style="font-size: 55px;">PokeMasters</span><br>
+                        <span style="font-size: 35px;">Trade</span>
+                    </div>
                 </div>
                 <div class="request centered_div">
                     Request <select id="request" onchange="selectionChanged(1)">
@@ -29,26 +42,40 @@
                     <img id="poke2" src="../static/images/pokeball.png" alt="poke" style="width: 50px;">
                 </div>
                 <div class="make_request_button centered_div">
-                    <button>Make Request</button>
+                    <button onclick="makeRequest()">Make Request</button>
                 </div>
                 <div class="border"></div>
                 <div class="trade_requests_title centered_div">Current Trade Requests</div>
                 <div class="trades">
-                    <div style="width: max-content;">
-                        {% for i in range(1,151) %}
-                        <div style="background-color: aqua; width: 160px; display: inline-block; margin: 10px;">
-                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
-                                width="100px">
-                            <br>
-                            Bulbasaur
-                            <br>
-                            <button>Purchase</button>
+                    <div style="width: 800px;">
+                        {% for i in range(length) %}
+                        <div style="display: inline-block; width: fit-content; margin-bottom: 5px;">
+                            <div class="trade_entry">
+                                <div class="username centered_div">{{trade_list[i]['username']}} Requests</div>
+                                <div class="poke1_trade centered_div"><img id=""
+                                        src="{{trade_list[i]['poke_request']['image']}}" alt="poke"
+                                        style="width: 75px;">
+                                </div>
+                                <div class="poke2_trade centered_div"><img id=""
+                                        src="{{trade_list[i]['poke_offer']['image']}}" alt="poke" style="width: 75px;">
+                                </div>
+                                <div class="for centered_div">For</div>
+                                <div class="name1 centered_div"><span
+                                        style="font-size:smaller;">{{trade_list[i]['poke_request']['name']}}</span>
+                                </div>
+                                <div class="name2 centered_div"><span
+                                        style="font-size:smaller;">{{trade_list[i]['poke_offer']['name']}}</span></div>
+                                <div class="trade_button centered_div"><button id="{{trade_list[i]['id']}}"
+                                        onclick="makeTrade(this)">Make
+                                        Trade</button></div>
+                            </div>
                         </div>
-                        {% if i%4 == 0 %}
-                        <br>
-                        {% endif %}
+
                         {% endfor %}
+
+
                     </div>
+
                 </div>
             </div>
         </div>

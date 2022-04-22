@@ -1,0 +1,14 @@
+<!-- {% for i in range(1,151) %}
+                        <div
+                            style="background-color: white; width: 180px; height: 180px; display: inline-block; margin: 10px;">
+                            <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+                                width="100px">
+                            <br>
+                            Bulbasaur
+                            <br>
+                            <button>Purchase</button>
+                        </div>
+                        {% if i%4 == 0 %}
+                        <br>
+                        {% endif %}
+                        {% endfor %} -->
