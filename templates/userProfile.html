@@ -1,27 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
-    <title>User Profile</title>
+    <title>PokeMasters - Profile</title>
     <link rel="stylesheet" href={{ url_for( 'static' , filename='userprofile.css' ) }} />
-
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='clear.css' ) }} />
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
-    <h1>User Profile</h1>
-    <img id="picture" src={{user_info.pic_path}} /><br>
-    <h3>User: {{user_info.username}}</h3>
-    <h3>Current points: {{user_info.currentpoints}}</h3>
-    <h3>Lifetime points: {{user_info.lifetimepoints}}</h3>
-    <h3>My Pokemon Collection:</h3>
+    <div id="nav">
+        <a href="/">Game</a>
+        <a href="#">| <u>Profile</u></a>
+        <a href="/leaderboard">| Leaderboard</a>
+        <a href="/store">| Store</a>
+        <a href="/trading">| Trade</a>
+        <a href="/logout">| Logout</a>
+    </div>
+    <div id="card">
+        <div id="logo">
+            <p>PokeMasters</p>
+        </div>
+        <div id="profile">
+            <p>Profile</p>
+        </div>
+        <div id="username">
+            <p>Username: {{user_info.username}}</p>
+        </div>
+        <div id="image">
+            <img id="profile" src={{user_info.pic_path}} />
+        </div>
+        <div id="upload">
+            <a href="/upload">
+                <button>UPLOAD PICTURE</button>
+            </a>
+        </div>
+        <div id="points">
+            <p>Current points: {{user_info.currentpoints}}</p>
+            <p>Lifetime points: {{user_info.lifetimepoints}}</p>
+        </div>
+    </div>
 
-    {% for data in pokelinfo %}
-    <h4>{{data.name}}</h4>
-    <img src="{{data.imageurl}}" width="150" , height="150">
-    {% endfor %}
+    <div id="card2">
+        <div>
+            <p class="myDatap">My Pokemon Collection:</p>
+            {% for data in pokelinfo %}
+            <p>{{data.name}}</p>
+            <img src="{{data.imageurl}}">
+            {% endfor %}
+        </div>
+    </div>
+    </div>
 
-    <!-- <div id="userData" /> -->
-    <script type="text/javascript" src=""></script>
+    <script type="text/javascript" src="/static/profile.js"></script>
 </body>
-
-</html>
