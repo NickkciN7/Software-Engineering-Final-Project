@@ -76,7 +76,11 @@ function selectionChanged(sel) {
 }
 
 function makeRequest() {
-    alert("Your Trade Request Was Made. Only Other Users Can See It Below")
+    if (document.getElementById("request").value == "none" | document.getElementById("offer").value == "none") {
+        alert("Please Select Both A Request And An Offer Before Clicking Make Request.");
+        return;
+    }
+
     rID = document.getElementById("request").value;
     oID = document.getElementById("offer").value;
     // console.log(requestID + " " + offerID);
@@ -88,7 +92,11 @@ function makeRequest() {
         },
         body: JSON.stringify(dataToSend),
     }).then(response => response.json()).then(data => {
-        console.log('Success:', data);
+        if (data === "has offered") {
+            alert("You Have Already Offered This Pokemon In Another Trade. Please Choose Another Pokemon.")
+        } else {
+            alert("Your Trade Request Was Made. Only Other Users Can See It Below.");
+        }
     });
 }
 
@@ -117,7 +125,7 @@ function checkInCollection(reqID) {
     if (collectionInt.includes(reqID)) {
         allowMakeTrade(reqID);
     } else {
-        alert("You Do Not Have The Requested Pokemon");
+        alert("You Do Not Have The Requested Pokemon.");
     }
 }
 
@@ -131,9 +139,9 @@ function allowMakeTrade() {
         body: JSON.stringify(dataToSend),
     }).then(response => response.json()).then(data => {
         if (data === "evolve") {
-            alert("The Pokemon You Received In This Trade Evolved")
+            alert("The Pokemon You Received In This Trade Evolved.")
         } else {
-            alert("The Pokemon You Traded For Is Now In Your Collection")
+            alert("The Pokemon You Traded For Is Now In Your Collection.")
         }
         window.location.reload();
     });
