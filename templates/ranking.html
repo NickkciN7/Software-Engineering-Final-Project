@@ -41,32 +41,11 @@
                 Total Points: {{user_ranking[2].lifetimepoints}}<br><br>
             </div>
         </div>
-        <!-- <div class="list">
-            <div class="left">
-                Users
-            </div>
-            <div class="right">
-                Total Lifttime Points
-            </div>
-        </div><br> -->
         <div class="right">
             <button onclick="sortAsc()" class="sortAsc">Ascending</button>
             <button onclick="sortDesc()" class="sortDesc">Descending</button>
         </div>
         <div id="display_list" />
-
-        <!-- <ol>
-                {% for user in user_ranking %}
-                <li>
-                    <div id="{{user.id}}">
-                        <a href=" /user_profile/{{user.id}}">{{user.username}}</a>
-                    </div>
-                    <div class="right">
-                        {{user.lifetimepoints}} Points
-                    </div>
-                </li>
-                {% endfor %}
-            </ol> -->
     </div>
     <script type="text/javascript" src="/static/ranking.js"></script>
 </body>
