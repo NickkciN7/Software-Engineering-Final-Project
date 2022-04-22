@@ -1,7 +1,7 @@
 <p align='center'>
   <h3 align="center">PokeMasters</h3>
   <p align="center">A web application built with Python and the PokeAPI to simulate the guessing game featured on the original Pokémon show during the commercial bumpers.</p>
-  <p align="center">https://the-pokemasters.herokuapp.com/</p>
+  <p align="center">https://the-pokemasters-v2.herokuapp.com//</p>
 </p>
 
 ---

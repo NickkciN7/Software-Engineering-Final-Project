@@ -74,3 +74,67 @@ function selectionChanged(sel) {
         img.src = spriteUrl;
     }
 }
+
+function makeRequest() {
+    alert("Your Trade Request Was Made. Only Other Users Can See It Below")
+    rID = document.getElementById("request").value;
+    oID = document.getElementById("offer").value;
+    // console.log(requestID + " " + offerID);
+    const dataToSend = { requestID: rID, offerID: oID };
+    fetch('/maketradeentry', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+    }).then(response => response.json()).then(data => {
+        console.log('Success:', data);
+    });
+}
+
+currentTradeId = -1;
+function makeTrade(buttonPressed) {
+    // console.log(buttonPressed.id);
+    currentTradeId = buttonPressed.id;
+    const dataToSend = { tradeID: buttonPressed.id };
+    reqID = -1;
+    fetch('/getrequestid?' + new URLSearchParams({
+        id: buttonPressed.id
+    })).then(response => response.json()).then(data => { checkInCollection(data); console.log(data); });
+
+
+}
+
+function checkInCollection(reqID) {
+    collectionInt = [];
+
+    length = collection.length;
+
+    for (var i = 0; i < length; i++) {
+        collectionInt.push(parseInt(collection[i]));
+    }
+    console.log(collectionInt);
+    if (collectionInt.includes(reqID)) {
+        allowMakeTrade(reqID);
+    } else {
+        alert("You Do Not Have The Requested Pokemon");
+    }
+}
+
+function allowMakeTrade() {
+    const dataToSend = { tradeID: currentTradeId };
+    fetch('/maketrade', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dataToSend),
+    }).then(response => response.json()).then(data => {
+        if (data === "evolve") {
+            alert("The Pokemon You Received In This Trade Evolved")
+        } else {
+            alert("The Pokemon You Traded For Is Now In Your Collection")
+        }
+        window.location.reload();
+    });
+}
