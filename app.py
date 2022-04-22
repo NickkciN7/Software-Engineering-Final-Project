@@ -739,6 +739,15 @@ def maketraderequest():
 def maketradeentry():
     if flask.request.method == "POST":
         data = flask.request.json
+        all_trades = trade.query.all()
+        print(type(data["offerID"]))
+        has_offered = False
+        for t in all_trades:
+            print(type(str(t.offerid)))
+            if str(t.offerid) == data["offerID"]:
+                has_offered = True
+        if has_offered:
+            return flask.jsonify("has offered")
         requestID = data["requestID"]
         offerID = data["offerID"]
         newTrade = trade(
