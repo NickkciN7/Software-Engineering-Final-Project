@@ -3,7 +3,7 @@
     height: 400px;
     border-radius: 25px 25px 25px 25px;
     display: flex;
-    margin-left: 200px;
+    margin-left: 140px;
     align-items: center;
     background-color: #2B2121;
 }
@@ -62,4 +62,9 @@ img {
     max-width: 20%;
     margin-top: 200px;
     margin-left: 230px;;
+}
+
+#footer {
+    margin-top: 350px;
+    margin-left: -525px;
 }
