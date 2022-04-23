@@ -484,7 +484,6 @@ def leaderboard():
 def user_profile(user_id):
     # user info
     user_info = profile.query.filter_by(id=user_id).first()
-
     # pokemon info
     pokelinfo = []
     array = get_collection(user_id)
@@ -499,12 +498,10 @@ def user_profile(user_id):
             "imageurl": imgurl,
         }
         pokelinfo.append(cdict)
-
     return render_template(
         "userProfile.html",
         user_info=user_info,
-        pokelinfo=pokelinfo,
-    )
+        pokelinfo=pokelinfo)
 
 
 @app.route("/search", methods=["GET", "POST"])
