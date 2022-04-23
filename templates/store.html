@@ -33,15 +33,14 @@
 	<div id="card2">
 		<div id="cardpoke">
 			<p class="pokep">Available Pokemon:</p>
-			{% for i in range(1,152) %}
-			<center><img src={{all_info[i].bulbaimageurl}} width="5%">
-				<p>Poki ID: {{i}}</p>
-				<p>Name: {{all_info[i].name}}</p>
+			{% for key, value in all_info.items() %}
+			<center><img src={{value.bulbaimageurl}} width="5%">
+				<p>Poki ID: {{key}}</p>
+				<p>Name: {{value.name}}</p>
 				<p>Price: {{pokemon_price}}</p>
-				<button type="button" id="{{i}}">Purchase</button><br /><br />
+				<p>Your Version: {{userversion}}</p>
+				<button type="button" id="{{key}}">Purchase</button><br /><br />
 			</center>
-			{% if i%5 == 0 %}
-			{% endif %}
 			{% endfor %}
 		</div>
 	</div>
@@ -55,16 +54,17 @@
 		</div>
 	</div>
 	
-	{% for i in range(1,152) %}
+	{% for key, value in all_info.items() %}
 	<div id = "Poki-Card" style="background-color: antiquewhite; width: 200px; display: inline-block; margin: 10px;">
-		<img src={{all_info[i].bulbaimageurl}} width="200px">
+		<img src={{value.bulbaimageurl}} width="200px">
 		<div id="Poki-Text">
-			Poki ID: {{i}}<br>
-			 Name: {{all_info[i].name}}<br>
+			Poki ID: {{key}}<br>
+			 Name: {{value.name}}<br>
 			 Price: <span id="pokemonCost">{{pokemon_price}}</span><br>
+			 Your Version: {{userversion}}<br>
 		</div>
 		<div class="Purchase">
-			<button type="button" id="{{i}}">Purchase</button>
+			<button type="button" id="{{key}}">Purchase</button>
 		</div>
 	</div>
 	<div class="homediv">
@@ -72,8 +72,7 @@
 			<button>HOME</button>
 		</a>
 	</div>
-	{% if i%5 == 0 %}
-	{% endif %}
+
 	{% endfor %}
 	<script src="/static/store.js" async></script> --->
 </body>
