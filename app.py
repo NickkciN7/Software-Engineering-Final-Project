@@ -414,10 +414,10 @@ def shopping():
     }
     if userversion == "Blue":
         exclude_poke = game_version_dict["Red"]
-        [all_info.pop(key) for key in exclude_poke]
+        pokemon_blue = [all_info.pop(key) for key in exclude_poke]
     if userversion == "Red":
         exclude_poke = game_version_dict["Blue"]
-        [all_info.pop(key) for key in exclude_poke] 
+        pokemon_red = [all_info.pop(key) for key in exclude_poke] 
     return render_template(
         "store.html",
         all_info=all_info,
@@ -425,7 +425,9 @@ def shopping():
         username=user_info.username,
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
-        userversion=userversion,)
+        userversion=userversion,
+        pokemon_blue=pokemon_blue,
+        pokemon_red=pokemon_red)
 
 
 @app.route("/purchasepokemon", methods=["GET", "POST"])
@@ -449,7 +451,6 @@ def purchasepokemon():
                 return jsonify({"success": "pokemon purchased"})
         else:
             return jsonify({"error": "not enough points"})
-
     return jsonify(1)
 
 
