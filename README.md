@@ -35,7 +35,7 @@ PokeMasters also uses a number of dependencies which can be installed by running
 8. Start the application in the root directory with `python app.py`.
 9. Preview the web page browser in '/'.
 10. To deploy to Heroku, run `git push heroku main`.
-
+11. populatePokeInfo() in app.py must be run once in order to populate your database. The url in that function: "https://the-pokemasters-v2.herokuapp.com/static/pokemon/" may not be active at some point, so as long as this repo is active, you can replace that url in the code with "https://github.com/NickkciN7/Software-Engineering-Final-Project/tree/main/static/pokemon/", or "baseurl/static/pokemon/" where baseurl is the base url of whatever heroku app you make. This is where the bulba images(high quality images rather than the small sprites from the pokeapi) are hosted.
 ## 🤫 Environment Secrets
 
 - **DB_URL:** The database url you get after adding Postgresql.

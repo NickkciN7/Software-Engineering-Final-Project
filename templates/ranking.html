@@ -2,50 +2,60 @@
 <html lang="en">
 
 <head>
+    <title>PokeMasters - Profile</title>
     <link rel="stylesheet" href={{ url_for( 'static' , filename='ranking.css' ) }} />
+    <link rel="stylesheet" href={{ url_for( 'static' , filename='clear.css' ) }} />
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon" />
 </head>
 
 <body>
-    {% with messages = get_flashed_messages() %} {% if messages %}
+    <!-- {% with messages = get_flashed_messages() %} {% if messages %}
     <ul id="flashes" class="flashes">
         {% for message in messages %}
         <li>{{ message }}</li>
         {% endfor %}
     </ul>
-    {% endif %} {% endwith %}
-    <div>
-        <div class="header">
-            <h1>LeaderBoard</h1>
+    {% endif %} {% endwith %} -->
+    <div id="nav">
+        <a href="/">Game</a>
+        <a href="/profile">| Profile</a>
+        <a href="/leaderboard">| <u>Leaderboard</u> </a>
+        <a href="/store">| Store</a>
+        <a href="/trading">| Trade</a>
+        <a href="/logout">| Logout</a>
+    </div>
+    <div id="card">
+        <div id="logo">
+            <p>PokeMasters</p>
         </div>
-        <div>
-            <form class="search" method="POST" action="/search">
+        <div id="leaderboard">
+            <p>Leader Board</p>
+        </div>
+        <div class="make_request_button centered_div">
+            {% with messages = get_flashed_messages() %} {% if messages %}
+            <ul id="flashes" class="flashes">
+                {% for message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %} {% endwith %}
+            <form method="POST" action="/search">
                 <input type="text" name="search_name" placeholder="Search Here" />
                 <input type="submit" value="Search" />
             </form>
         </div>
-        <br><br>
-        <div class="Row">
-            <div class="Column">
-                <h3>No.1</h3>
-                {{user_ranking[0].username}}<br>
-                Total Points: {{user_ranking[0].lifetimepoints}}<br><br>
+    </div>
+
+    <div id="card2">
+        <div id="cardpoke">
+            <div class="make_request_button_2 centered_div">
+                <button onclick="sortAsc()" class="sortAsc">Ascending</button>
+                <button onclick="sortDesc()" class="sortDesc">Descending</button>
             </div>
-            <div class="Column">
-                <h3>No.2</h3>
-                {{user_ranking[1].username}}<br>
-                Total Points: {{user_ranking[1].lifetimepoints}}<br><br>
-            </div>
-            <div class="Column">
-                <h3>No.3</h3>
-                {{user_ranking[2].username}}<br>
-                Total Points: {{user_ranking[2].lifetimepoints}}<br><br>
-            </div>
+            <center>
+                <div id="display_list" />
+            </center>
         </div>
-        <div class="right">
-            <button onclick="sortAsc()" class="sortAsc">Ascending</button>
-            <button onclick="sortDesc()" class="sortDesc">Descending</button>
-        </div>
-        <div id="display_list" />
     </div>
     <script type="text/javascript" src="/static/ranking.js"></script>
 </body>

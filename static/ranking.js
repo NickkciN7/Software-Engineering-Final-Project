@@ -11,8 +11,11 @@ function listSorted(data) {
     for (var i = 0; i < data.length; i++) {
         var listItem = document.createElement('li');
         var userList = document.createElement('a')
-        userList.textContent = data[i].username;
-        userList.href = "/user_profile/" + data[i].id
+
+        userList.textContent = "User: " + data[i].username;
+        userList.href = "/user_profile/" + data[i].id;
+
+        userList.className = "usernameLink";
         var userPoints = document.createTextNode(data[i].lifetimepoints + ' points');
         var div = document.createElement("div");
         div.appendChild(userList);
