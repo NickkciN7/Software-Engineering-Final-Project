@@ -410,10 +410,13 @@ def shopping():
     }
     if userversion == "Blue":
         exclude_poke = game_version_dict["Red"]
-        [all_info.pop(key) for key in exclude_poke]
+        for key in exclude_poke:
+            all_info.pop(key)
     if userversion == "Red":
         exclude_poke = game_version_dict["Blue"]
-        [all_info.pop(key) for key in exclude_poke]
+        for key in exclude_poke:
+            all_info.pop(key)
+
     return render_template(
         "store.html",
         all_info=all_info,
@@ -421,8 +424,8 @@ def shopping():
         username=user_info.username,
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
-        userversion=userversion,
-    )
+        userversion=userversion)
+
 
 
 @app.route("/purchasepokemon", methods=["GET", "POST"])
@@ -446,7 +449,6 @@ def purchasepokemon():
                 return jsonify({"success": "pokemon purchased"})
         else:
             return jsonify({"error": "not enough points"})
-
     return jsonify(1)
 
 
@@ -473,30 +475,33 @@ def leaderboard():
     return render_template("ranking.html", user_ranking=user_ranking,)
 
 
-@app.route("/user_profile/<user_id>", methods=["GET", "POST"])
+@app.route("/user_profile/<user_id>", methods=["GET"])
 def user_profile(user_id):
-    if flask.request.method == "GET":
-        # user info
-        user_info = profile.query.filter_by(id=user_id).first()
+    # user info
+    user_info = profile.query.filter_by(id=user_id).first()
 
-        # pokemon info
-        pokelinfo = []
-        array = get_collection(user_id)
-        array_num = [int(i) for i in array]
-        allpoke = get_poke_info_db()
-        total = len(array_num)
-        for i in range(total):
-            name = allpoke[array_num[i]]["name"]
-            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
-            cdict = {
-                "name": name,
-                "imageurl": imgurl,
-            }
-            pokelinfo.append(cdict)
-        return render_template(
-            "userProfile.html", user_info=user_info, pokelinfo=pokelinfo,
-        )
-    return flask.redirect("/ranking")
+
+    # pokemon info
+    pokelinfo = []
+    array = get_collection(user_id)
+    array_num = [int(i) for i in array]
+    allpoke = get_poke_info_db()
+    total = len(array_num)
+    for i in range(total):
+        name = allpoke[array_num[i]]["name"]
+        imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+        cdict = {
+            "name": name,
+            "imageurl": imgurl,
+        }
+        pokelinfo.append(cdict)
+
+    return render_template(
+        "userProfile.html",
+        user_info=user_info,
+        pokelinfo=pokelinfo,
+    )
+
 
 
 @app.route("/search", methods=["GET", "POST"])
