@@ -165,7 +165,6 @@ def get_collection(userid):
 # end database related functions
 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return profile.query.get(user_id)
@@ -211,10 +210,7 @@ def signup():
             db.session.add(user)
             db.session.commit()
             db.session.refresh(user)
-            user_version_data = version(
-                userid=user.id,
-                version=user_version,
-            )
+            user_version_data = version(userid=user.id, version=user_version,)
             db.session.add(user_version_data)
             db.session.commit()
             flask.flash(f"{user_name} has been added")
@@ -410,7 +406,7 @@ def shopping():
     userversion = userversionid.version
     game_version_dict = {
         "Red": [23, 24, 43, 44, 45, 56, 57, 58, 59, 65, 68, 76, 94, 123, 125],
-        "Blue": [27, 28, 37, 38, 52, 53, 65, 69, 68, 70, 71, 76, 94, 126, 127]
+        "Blue": [27, 28, 37, 38, 52, 53, 65, 69, 68, 70, 71, 76, 94, 126, 127],
     }
     if userversion == "Blue":
         exclude_poke = game_version_dict["Red"]
@@ -420,6 +416,7 @@ def shopping():
         exclude_poke = game_version_dict["Blue"]
         for key in exclude_poke:
             all_info.pop(key)
+
     return render_template(
         "store.html",
         all_info=all_info,
@@ -428,6 +425,7 @@ def shopping():
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
         userversion=userversion)
+
 
 
 @app.route("/purchasepokemon", methods=["GET", "POST"])
@@ -474,16 +472,14 @@ def ranking():
 def leaderboard():
     user_list = profile.query.all()
     user_ranking = sorted(user_list, key=lambda x: x.lifetimepoints, reverse=True)
-    return render_template(
-        "ranking.html",
-        user_ranking=user_ranking,
-    )
+    return render_template("ranking.html", user_ranking=user_ranking,)
 
 
 @app.route("/user_profile/<user_id>", methods=["GET"])
 def user_profile(user_id):
     # user info
     user_info = profile.query.filter_by(id=user_id).first()
+
 
     # pokemon info
     pokelinfo = []
@@ -507,6 +503,7 @@ def user_profile(user_id):
     )
 
 
+
 @app.route("/search", methods=["GET", "POST"])
 def search():
     if flask.request.method == "GET":
@@ -514,24 +511,35 @@ def search():
     else:
         search_name = flask.request.form["search_name"]
         found_user = profile.query.filter_by(username=search_name).first()
-        pokelinfo = []
-        array = get_collection(found_user.id)
-        array_num = [int(i) for i in array]
-        allpoke = get_poke_info_db()
-        total = len(array_num)
-        for i in range(total):
-            name = allpoke[array_num[i]]["name"]
-            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
-            cdict = {
-                "name": name,
-                "imageurl": imgurl,
-            }
-            pokelinfo.append(cdict)
+        # pokelinfo = []
+        # array = get_collection(found_user.id)
+        # array_num = [int(i) for i in array]
+        # allpoke = get_poke_info_db()
+        # total = len(array_num)
+        # for i in range(total):
+        #     name = allpoke[array_num[i]]["name"]
+        #     imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+        #     cdict = {
+        #         "name": name,
+        #         "imageurl": imgurl,
+        #     }
+        #     pokelinfo.append(cdict)
         if found_user:
+            pokelinfo = []
+            array = get_collection(found_user.id)
+            array_num = [int(i) for i in array]
+            allpoke = get_poke_info_db()
+            total = len(array_num)
+            for i in range(total):
+                name = allpoke[array_num[i]]["name"]
+                imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+                cdict = {
+                    "name": name,
+                    "imageurl": imgurl,
+                }
+                pokelinfo.append(cdict)
             return render_template(
-                "userProfile.html",
-                user_info=found_user,
-                pokelinfo=pokelinfo,
+                "userProfile.html", user_info=found_user, pokelinfo=pokelinfo,
             )
         else:
             flask.flash("No user found")
@@ -600,11 +608,7 @@ def maketradeentry():
             return flask.jsonify("has offered")
         requestID = data["requestID"]
         offerID = data["offerID"]
-        newTrade = trade(
-            userid=current_user.id,
-            requestid=requestID,
-            offerid=offerID,
-        )
+        newTrade = trade(userid=current_user.id, requestid=requestID, offerid=offerID,)
         db.session.add(newTrade)
         db.session.commit()
     return flask.jsonify(1)
