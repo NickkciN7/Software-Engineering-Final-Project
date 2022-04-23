@@ -117,3 +117,13 @@ a:visited {
     text-decoration: none;
     color: #2B2121;
 }
+
+.usernameLink {
+    text-decoration: none;
+    color: white;
+}
+
+.usernameLink:visited {
+    text-decoration: none;
+    color: white;
+}
