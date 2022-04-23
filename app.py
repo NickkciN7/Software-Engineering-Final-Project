@@ -414,10 +414,12 @@ def shopping():
     }
     if userversion == "Blue":
         exclude_poke = game_version_dict["Red"]
-        pokemon_blue = [all_info.pop(key) for key in exclude_poke]
+        for key in exclude_poke:
+            all_info.pop(key)
     if userversion == "Red":
         exclude_poke = game_version_dict["Blue"]
-        pokemon_red = [all_info.pop(key) for key in exclude_poke] 
+        for key in exclude_poke:
+            all_info.pop(key)
     return render_template(
         "store.html",
         all_info=all_info,
@@ -425,9 +427,7 @@ def shopping():
         username=user_info.username,
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
-        userversion=userversion,
-        pokemon_blue=pokemon_blue,
-        pokemon_red=pokemon_red)
+        userversion=userversion)
 
 
 @app.route("/purchasepokemon", methods=["GET", "POST"])
@@ -500,6 +500,7 @@ def user_profile(user_id):
                 "imageurl": imgurl,
             }
             pokelinfo.append(cdict)
+            
         return render_template(
             "userProfile.html",
             user_info=user_info,
