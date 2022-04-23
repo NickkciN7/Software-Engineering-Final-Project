@@ -165,7 +165,6 @@ def get_collection(userid):
 # end database related functions
 
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return profile.query.get(user_id)
@@ -407,14 +406,14 @@ def shopping():
     userversion = userversionid.version
     game_version_dict = {
         "Red": [23, 24, 43, 44, 45, 56, 57, 58, 59, 65, 68, 76, 94, 123, 125],
-        "Blue": [27, 28, 37, 38, 52, 53, 65, 69, 68, 70, 71, 76, 94, 126, 127]
+        "Blue": [27, 28, 37, 38, 52, 53, 65, 69, 68, 70, 71, 76, 94, 126, 127],
     }
     if userversion == "Blue":
         exclude_poke = game_version_dict["Red"]
         [all_info.pop(key) for key in exclude_poke]
     if userversion == "Red":
         exclude_poke = game_version_dict["Blue"]
-        [all_info.pop(key) for key in exclude_poke] 
+        [all_info.pop(key) for key in exclude_poke]
     return render_template(
         "store.html",
         all_info=all_info,
@@ -422,7 +421,8 @@ def shopping():
         username=user_info.username,
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
-        userversion=userversion,)
+        userversion=userversion,
+    )
 
 
 @app.route("/purchasepokemon", methods=["GET", "POST"])
@@ -496,6 +496,7 @@ def user_profile(user_id):
         return render_template(
             "userProfile.html", user_info=user_info, pokelinfo=pokelinfo,
         )
+    return flask.redirect("/ranking")
 
 
 @app.route("/search", methods=["GET", "POST"])
