@@ -480,32 +480,31 @@ def leaderboard():
     )
 
 
-@app.route("/user_profile/<user_id>", methods=["GET", "POST"])
+@app.route("/user_profile/<user_id>", methods=["GET"])
 def user_profile(user_id):
-    if flask.request.method == "GET":
-        # user info
-        user_info = profile.query.filter_by(id=user_id).first()
+    # user info
+    user_info = profile.query.filter_by(id=user_id).first()
 
-        # pokemon info
-        pokelinfo = []
-        array = get_collection(user_id)
-        array_num = [int(i) for i in array]
-        allpoke = get_poke_info_db()
-        total = len(array_num)
-        for i in range(total):
-            name = allpoke[array_num[i]]["name"]
-            imgurl = allpoke[array_num[i]]["bulbaimageurl"]
-            cdict = {
-                "name": name,
-                "imageurl": imgurl,
-            }
-            pokelinfo.append(cdict)
-            
-        return render_template(
-            "userProfile.html",
-            user_info=user_info,
-            pokelinfo=pokelinfo,
-        )
+    # pokemon info
+    pokelinfo = []
+    array = get_collection(user_id)
+    array_num = [int(i) for i in array]
+    allpoke = get_poke_info_db()
+    total = len(array_num)
+    for i in range(total):
+        name = allpoke[array_num[i]]["name"]
+        imgurl = allpoke[array_num[i]]["bulbaimageurl"]
+        cdict = {
+            "name": name,
+            "imageurl": imgurl,
+        }
+        pokelinfo.append(cdict)
+
+    return render_template(
+        "userProfile.html",
+        user_info=user_info,
+        pokelinfo=pokelinfo,
+    )
 
 
 @app.route("/search", methods=["GET", "POST"])
