@@ -406,21 +406,18 @@ def shopping():
     all_info = get_poke_info_db()
     poke_collection = get_collection(userid=1)
     poke_collection_num = [int(i) for i in poke_collection]
-
     userversionid = version.query.filter_by(userid=current_user.id).first()
     userversion = userversionid.version
     game_version_dict = {
-    "Red": [23,24,43,44,45,56,57,58,59,65,68,76,94,123,125],
-    "Blue": [27,28,37,38,52,53,65,69,68,70,71,76,94,126,127]
+        "Red": [23, 24, 43, 44, 45, 56, 57, 58, 59, 65, 68, 76, 94, 123, 125],
+        "Blue": [27, 28, 37, 38, 52, 53, 65, 69, 68, 70, 71, 76, 94, 126, 127]
     }
-
     if userversion == "Blue":
         exclude_poke = game_version_dict["Red"]
         [all_info.pop(key) for key in exclude_poke]
     if userversion == "Red":
         exclude_poke = game_version_dict["Blue"]
-        [all_info.pop(key) for key in exclude_poke]
-        
+        [all_info.pop(key) for key in exclude_poke] 
     return render_template(
         "store.html",
         all_info=all_info,
@@ -428,8 +425,7 @@ def shopping():
         username=user_info.username,
         currentpoints=user_info.currentpoints,
         pokemon_price=pokemon_price,
-        userversion = userversion, 
-    )
+        userversion=userversion,)
 
 
 @app.route("/purchasepokemon", methods=["GET", "POST"])
@@ -452,7 +448,6 @@ def purchasepokemon():
                 db.session.commit()
                 return jsonify({"success": "pokemon purchased"})
         else:
-            current_user_profile.currentpoints < pokemon_price
             return jsonify({"error": "not enough points"})
 
     return jsonify(1)
