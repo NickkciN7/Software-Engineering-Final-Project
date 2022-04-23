@@ -410,12 +410,10 @@ def shopping():
     }
     if userversion == "Blue":
         exclude_poke = game_version_dict["Red"]
-        for key in exclude_poke:
-          all_info.pop(key)
+        [all_info.pop(key) for key in exclude_poke]
     if userversion == "Red":
         exclude_poke = game_version_dict["Blue"]
-        for key in exclude_poke:
-          all_info.pop(key)
+        [all_info.pop(key) for key in exclude_poke]
     return render_template(
         "store.html",
         all_info=all_info,
@@ -475,32 +473,8 @@ def leaderboard():
     return render_template("ranking.html", user_ranking=user_ranking,)
 
 
-@app.route("/user_profile/<user_id>", methods=["GET"])
+@app.route("/user_profile/<user_id>", methods=["GET", "POST"])
 def user_profile(user_id):
-    # user info
-    user_info = profile.query.filter_by(id=user_id).first()
-    # pokemon info
-    pokelinfo = []
-    array = get_collection(user_id)
-    array_num = [int(i) for i in array]
-    allpoke = get_poke_info_db()
-    total = len(array_num)
-    for i in range(total):
-        name = allpoke[array_num[i]]["name"]
-        imgurl = allpoke[array_num[i]]["bulbaimageurl"]
-        cdict = {
-            "name": name,
-            "imageurl": imgurl,
-        }
-        pokelinfo.append(cdict)
-    return render_template(
-        "userProfile.html",
-        user_info=user_info,
-        pokelinfo=pokelinfo)
-
-
-@app.route("/search", methods=["GET", "POST"])
-def search():
     if flask.request.method == "GET":
         # user info
         user_info = profile.query.filter_by(id=user_id).first()
